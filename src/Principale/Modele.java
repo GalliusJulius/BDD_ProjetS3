@@ -21,6 +21,8 @@ public class Modele {
 	private JPanel fenetreActu;
 	private JFrame fen;
 	private int width,heigth;
+	private boolean modeAgence;
+	private String catVehicule, dateD, dateF;
 	
 	public Modele(int w,int h) {
 		fenetreActu=new AffichageConnection(w,h,this);
@@ -60,6 +62,11 @@ public class Modele {
 			fen.revalidate();
 		}
 	}
+	
+	public void rechercher() {
+		System.out.println("OK rechercher !");
+		// TODO 
+	}
 
 	public JPanel getFenetreActu() {
 		return fenetreActu;
@@ -70,5 +77,19 @@ public class Modele {
 	}
 	
 	
-
+	public void setCatVehicule(String s) {
+		catVehicule = s;
+	}
+	
+	public void setDateD(String s) {
+		dateD = s;
+	}
+	
+	public void setDateF(String s) {
+		dateF = s;
+	}
+	
+	public void setModeAgence(boolean b) {
+		modeAgence = b;
+	}
 }

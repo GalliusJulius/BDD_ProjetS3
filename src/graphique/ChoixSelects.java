@@ -4,8 +4,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.*;
+import javax.swing.event.AncestorListener;
 
 import com.toedter.calendar.*;
+
+import Controlleurs.ChangementFenetre;
 // A télécharger sur : http://www.java2s.com/Code/Jar/j/Downloadjcalendar14jar.htm
 // + Inclure dans éclipse (propriétés du projet -> Java Build Path -> Librairies -> Add external Jars)
 
@@ -19,40 +22,36 @@ public class ChoixSelects extends JPanel{
 	/**
 	 * Constructeur avec les differents boutons de contols (a definir)
 	 */
-	public ChoixSelects() {
+	public ChoixSelects(ChangementFenetre cont) {
 		String[] tabCat = {"Toutes catégories","Citadine","Compacte","Familiale"};
-		// 
-		JPanel jp1 = new JPanel();
 		
-		jp1.setLayout(new GridLayout(1,4));
+		this.setLayout(new GridLayout(1,6));
 		//Question 4
 		JCheckBox c1 = new JCheckBox("Mode Agence");
+		c1.addActionListener(cont);
 		//question 1
 		JComboBox c2 = new JComboBox(tabCat);
+		c2.addActionListener(cont);
 		
 		JCheckBox c3 = new JCheckBox("3");
+		
+		// Date de début
+		JDateChooser c4 = cont.getDateD();
+		c4.addPropertyChangeListener(cont);
+		// Date de fin
+		JDateChooser c5 = cont.getDateF();
+		c5.addPropertyChangeListener(cont);
+		
 		//lancer la recherhe
-		JButton c6 = new JButton("GO");
+		JButton c6 = new JButton("Rechercher");
+		c6.addActionListener(cont);
 		
-		jp1.setPreferredSize(new Dimension(1000, 25));
-		jp1.add(c1);
-		jp1.add(c2);
-		jp1.add(c3);
-		jp1.add(c6);
-		
-		//Choix des dates
-		JPanel jp2 = new JPanel();
-		jp2.setLayout(new GridLayout(1,3));
-		JCalendar c4 = new JCalendar();
-		JCalendar c5 = new JCalendar();
-		jp2.add(Box.createGlue());
-		jp2.add(c4);
-		jp2.add(c5);
-		
-		// TODO revoir la dispostion !?
-		this.setLayout(new BorderLayout());
-		this.add(jp1, BorderLayout.NORTH);
-		this.add(jp2, BorderLayout.WEST);
+		this.add(c1);
+		this.add(c2);
+		this.add(c3);
+		this.add(c4);
+		this.add(c5);
+		this.add(c6);
 	}
 
 }

@@ -23,13 +23,16 @@ public class AffichageAppli extends JPanel{
 	public AffichageAppli(int width,int height,Modele m) {
 		super();
 		setPreferredSize(new Dimension(width,height));
+		ChangementFenetre cont = new ChangementFenetre(m);
 		this.setLayout(new BorderLayout());
-		this.add(new ChoixSelects(),BorderLayout.NORTH);
-		//contenu lors des selections (a definir)
-		this.add(new JPanel(),BorderLayout.CENTER);
+		
+		this.add(new ChoixSelects(cont),BorderLayout.NORTH);
+		
+		this.add(new AffichageResultat(),BorderLayout.CENTER);
+		
 		JPanel pan = new JPanel();
 		JButton admin = new JButton("Mode Admin");
-		admin.addActionListener(new ChangementFenetre(m));
+		admin.addActionListener(cont);
 		pan.add(admin);
 		this.add(pan,BorderLayout.SOUTH);
 	}
