@@ -33,7 +33,7 @@ public class ChoixSelects extends JPanel{
 		JComboBox c2 = new JComboBox(tabCat);
 		c2.addActionListener(cont);
 		
-		JCheckBox c3 = new JCheckBox("3");
+		//JCheckBox c3 = new JCheckBox("3");
 		
 		// Date de début
 		JDateChooser c4 = cont.getDateD();
@@ -48,7 +48,7 @@ public class ChoixSelects extends JPanel{
 		
 		this.add(c1);
 		this.add(c2);
-		this.add(c3);
+		//this.add(c3);
 		this.add(c4);
 		this.add(c5);
 		this.add(c6);

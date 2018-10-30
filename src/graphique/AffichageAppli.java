@@ -28,7 +28,9 @@ public class AffichageAppli extends JPanel{
 		
 		this.add(new ChoixSelects(cont),BorderLayout.NORTH);
 		
-		this.add(new AffichageResultat(),BorderLayout.CENTER);
+		AffichageResultat affRes = new AffichageResultat(m);
+		m.addObserver(affRes);
+		this.add(affRes,BorderLayout.CENTER);
 		
 		JPanel pan = new JPanel();
 		JButton admin = new JButton("Mode Admin");

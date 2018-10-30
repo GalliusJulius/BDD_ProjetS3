@@ -1,6 +1,7 @@
 package Principale;
 
 import java.sql.*;
+import java.util.Observable;
 import java.io.*;
 
 import javax.swing.JFrame;
@@ -16,19 +17,22 @@ import graphique.AffichageConnection;
  * @author moreliere
  *
  */
-public class Modele {
+public class Modele extends Observable{
 	
 	private JPanel fenetreActu;
 	private JFrame fen;
 	private int width,heigth;
 	private boolean modeAgence;
-	private String catVehicule, dateD, dateF;
+	private Date dateD, dateF;
+	private String catVehicule, resultat;
+	private Connection cnt;
 	
 	public Modele(int w,int h) {
 		fenetreActu=new AffichageConnection(w,h,this);
 		width=w;
 		heigth=h;
 		fen=new Fenetre(fenetreActu);
+		resultat = "";
 	}
 	
 	/**
@@ -44,9 +48,9 @@ public class Modele {
 			
 			//CONNECTION :
 			// URL : jdbc:oracle:thin:@localhost:1521:XE
-			Connection cnt = DriverManager.getConnection(url, login, mdp);
+			cnt = DriverManager.getConnection(url, login, mdp);
 			// Vérifie que la connection est bien effectuée :
-			System.out.println(cnt.isValid(100));
+			System.out.println("Connecté : " + cnt.isValid(100));
 			
 			fenetreActu = new AffichageAppli(width,heigth,this);
 			fen.setContentPane(fenetreActu);
@@ -63,9 +67,46 @@ public class Modele {
 		}
 	}
 	
-	public void rechercher() {
+	public void rechercher() throws SQLException {
+		
+
+		PreparedStatement stt = cnt.prepareStatement("SELECT DISTINCT VEHICULE.NO_IMM, VEHICULE.MODELE from VEHICULE"
+                            							 +" INNER JOIN CATEGORIE ON VEHICULE.CODE_CATEG = CATEGORIE.CODE_CATEG"
+														 +" INNER JOIN CALENDRIER ON VEHICULE.NO_IMM = CALENDRIER.NO_IMM"
+														 +" where LIBELLE like ? and VEHICULE.NO_IMM not in"
+														 +" (select NO_IMM from CALENDRIER"
+														 +" where ? <= DATEJOUR and ? >= DATEJOUR and PASLIBRE is not null)");
+		
+		stt.setString(1, catVehicule.toLowerCase());
+		stt.setDate(2, dateD);
+		stt.setDate(3, dateF);
+		
+		ResultSet res = stt.executeQuery();
+		StringBuffer str = new StringBuffer("");
+		
+		// A voir au niveau de l'affichage :
+		while(res.next()) {
+			str.append(res.getString(1));
+			str.append(" | ");
+			str.append(res.getString(2));
+			str.append("\n");
+		}
+		
+		stt.close();
+		res.close();
+		
+		resultat = str.toString();
+		
+		if(resultat.equals("")) {
+			resultat = "Aucun Resultat !";
+		}
+		
+		System.out.println(resultat);
+		
+		setChanged();
+		notifyObservers();
+		
 		System.out.println("OK rechercher !");
-		// TODO 
 	}
 
 	public JPanel getFenetreActu() {
@@ -81,15 +122,19 @@ public class Modele {
 		catVehicule = s;
 	}
 	
-	public void setDateD(String s) {
-		dateD = s;
+	public void setDateD(Date d) {
+		dateD = d;
 	}
 	
-	public void setDateF(String s) {
-		dateF = s;
+	public void setDateF(Date d) {
+		dateF = d;
 	}
 	
 	public void setModeAgence(boolean b) {
 		modeAgence = b;
+	}
+	
+	public String getResultat() {
+		return resultat;
 	}
 }

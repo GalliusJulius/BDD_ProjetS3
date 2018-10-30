@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -58,7 +59,9 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 			// Affiche le resultat
 			else if(((JButton)arg0.getSource()).getText().equals("Rechercher")) {
 				System.out.println("Recherche...");
-				model.rechercher();
+				try {
+					model.rechercher();
+				} catch (SQLException e) { e.printStackTrace(); }
 			}
 			//on passe en mode admin
 			else {
@@ -66,11 +69,11 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 			}
 		} else if(arg0.getSource() instanceof JComboBox) {
 			model.setCatVehicule((String) ((JComboBox)arg0.getSource()).getSelectedItem());
-			System.out.println("Cat. Veh. : " + (String) ((JComboBox)arg0.getSource()).getSelectedItem());
+			//System.out.println("Cat. Veh. : " + (String) ((JComboBox)arg0.getSource()).getSelectedItem());
 		} else if(arg0.getSource() instanceof JCheckBox) {
 			if(((JCheckBox)arg0.getSource()).getText().equals("Mode Agence")) {
 				model.setModeAgence(((JCheckBox)arg0.getSource()).isSelected());
-				System.out.println("Mode Agence : " + ((JCheckBox)arg0.getSource()).isSelected());
+				//System.out.println("Mode Agence : " + ((JCheckBox)arg0.getSource()).isSelected());
 			}
 		}
 		
@@ -81,11 +84,19 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 	public void propertyChange(PropertyChangeEvent arg0) {
 		if(arg0.getSource() instanceof JDateChooser) {
 			int day = ((JDateChooser)arg0.getSource()).getJCalendar().getDayChooser().getDay();
-			int month = ((JDateChooser)arg0.getSource()).getJCalendar().getMonthChooser().getMonth() + 1; // Je ne sais pas pourquoi ? (le + 1)
+			int month = ((JDateChooser)arg0.getSource()).getJCalendar().getMonthChooser().getMonth() + 1;
 			int year = ((JDateChooser)arg0.getSource()).getJCalendar().getYearChooser().getYear();
+			Date date = Date.valueOf(year + "-" + month + "-" + day);
+			//System.out.println("OK JDateChooser !");
+			//System.out.println(day + "/" + month + "/" + year);
 			
-			System.out.println("OK JDateChooser !");
-			System.out.println(day + " / " + month + " / " + year);
+			if(arg0.getSource().equals(dateD)){
+				//System.out.println("OK Date Debut !");
+				model.setDateD(date);
+			} else {
+				//System.out.println("OK Date Fin !");
+				model.setDateF(date);
+			}
 		}
 	}
 	
