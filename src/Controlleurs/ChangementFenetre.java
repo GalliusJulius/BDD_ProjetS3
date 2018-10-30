@@ -1,6 +1,7 @@
 package Controlleurs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 
@@ -33,7 +34,12 @@ public class ChangementFenetre implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		//on veut se connecter
 		if(((JButton)arg0.getSource()).getText().equals("Se connecter")) {
-			model.seConnecter();
+			try {
+				model.seConnecter();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		//on passe en mode admin
 		else {

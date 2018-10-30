@@ -1,5 +1,8 @@
 package Principale;
 
+import java.sql.*;
+import java.io.*;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -28,14 +31,21 @@ public class Modele {
 	
 	/**
 	 * Permet de se connecter a la base
+	 * @throws SQLException 
 	 */
-	public void seConnecter() {
+	public void seConnecter() throws SQLException {
 		if(fenetreActu instanceof AffichageConnection) {
-			String url = ((AffichageConnection)fenetreActu).getName();
+			String url = ((AffichageConnection)fenetreActu).getUrl();
 			String mdp = ((AffichageConnection)fenetreActu).getMdp();
 			String login = ((AffichageConnection)fenetreActu).getLogin();
 			System.out.println("Tentative de connection sur "+url+" avec l'id :"+login+" et le mdp : "+mdp);
-			//Implanter la connection
+			
+			//CONNECTION :
+			// URL : jdbc:oracle:thin:@localhost:1521:XE
+			Connection cnt = DriverManager.getConnection(url, login, mdp);
+			// Vérifie que la connection est bien effectuée :
+			System.out.println(cnt.isValid(100));
+			
 			fenetreActu = new AffichageAppli(width,heigth,this);
 			fen.setContentPane(fenetreActu);
 			fen.revalidate();

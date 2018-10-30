@@ -7,7 +7,7 @@ public class Principale {
 	
 	public static void main (String [] args) {
 		//on cree un modele qui va tout creer
-		Modele mod = new Modele(500,400);
+		Modele mod = new Modele(1000,500);
 	}
 
 }
