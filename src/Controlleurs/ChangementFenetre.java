@@ -58,7 +58,7 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 			}
 			// Affiche le resultat
 			else if(((JButton)arg0.getSource()).getText().equals("Rechercher")) {
-				System.out.println("Recherche...");
+				//System.out.println("Recherche...");
 				try {
 					model.rechercher();
 				} catch (SQLException e) { e.printStackTrace(); }

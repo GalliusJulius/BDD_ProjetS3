@@ -1,11 +1,16 @@
 package Principale;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Observable;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.io.*;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import graphique.AffichageAdmin;
 import graphique.AffichageAppli;
@@ -19,12 +24,12 @@ import graphique.AffichageConnection;
  */
 public class Modele extends Observable{
 	
-	private JPanel fenetreActu;
+	private JPanel fenetreActu, resultat;
 	private JFrame fen;
 	private int width,heigth;
 	private boolean modeAgence;
 	private Date dateD, dateF;
-	private String catVehicule, resultat;
+	private String catVehicule;
 	private Connection cnt;
 	
 	public Modele(int w,int h) {
@@ -32,7 +37,7 @@ public class Modele extends Observable{
 		width=w;
 		heigth=h;
 		fen=new Fenetre(fenetreActu);
-		resultat = "";
+		resultat = new JPanel();
 	}
 	
 	/**
@@ -82,31 +87,41 @@ public class Modele extends Observable{
 		stt.setDate(3, dateF);
 		
 		ResultSet res = stt.executeQuery();
-		StringBuffer str = new StringBuffer("");
+		ArrayList<ArrayList<String>> tabRes = new ArrayList<ArrayList<String>>();
+		int i = 0;
 		
-		// A voir au niveau de l'affichage :
+		tabRes.add(new ArrayList<String>());
+		tabRes.get(i).add("");
+		tabRes.get(i).add(res.getMetaData().getColumnName(1));
+		tabRes.get(i).add(res.getMetaData().getColumnName(2));
+		i++;
+		
 		while(res.next()) {
-			str.append(res.getString(1));
-			str.append(" | ");
-			str.append(res.getString(2));
-			str.append("\n");
+			tabRes.add(new ArrayList<String>());
+			tabRes.get(i).add("");
+			tabRes.get(i).add(res.getString(1));
+			tabRes.get(i).add(res.getString(2));
+			i++;
 		}
+		
+		//System.out.println(tabRes);
 		
 		stt.close();
 		res.close();
 		
-		resultat = str.toString();
-		
-		if(resultat.equals("")) {
-			resultat = "Aucun Resultat !";
+		resultat.setLayout(new GridLayout(tabRes.size(),tabRes.get(0).size()));
+		for(ArrayList<String> tab : tabRes) {
+			for(String s : tab) {
+				JTextArea text = new JTextArea(s);
+				text.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
+			            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+				resultat.add(text);
+			}
 		}
-		
-		System.out.println(resultat);
 		
 		setChanged();
 		notifyObservers();
-		
-		System.out.println("OK rechercher !");
+		//System.out.println("OK rechercher !");
 	}
 
 	public JPanel getFenetreActu() {
@@ -134,7 +149,7 @@ public class Modele extends Observable{
 		modeAgence = b;
 	}
 	
-	public String getResultat() {
+	public JPanel getResultat() {
 		return resultat;
 	}
 }
