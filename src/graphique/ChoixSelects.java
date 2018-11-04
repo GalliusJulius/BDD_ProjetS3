@@ -23,7 +23,7 @@ public class ChoixSelects extends JPanel{
 	 * Constructeur avec les differents boutons de contols (a definir)
 	 */
 	public ChoixSelects(ChangementFenetre cont) {
-		String[] tabCat = {"Toutes catégories","Citadine","Compacte","Familiale"};
+		String[] tabCat = {"Toutes catÃ©gories","Citadine","Compacte","Familiale"};
 		
 		this.setLayout(new GridLayout(1,6));
 		//Question 4
