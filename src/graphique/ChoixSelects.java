@@ -23,7 +23,7 @@ public class ChoixSelects extends JPanel{
 	 * Constructeur avec les differents boutons de contols (a definir)
 	 */
 	public ChoixSelects(ChangementFenetre cont) {
-		String[] tabCat = {"Toutes catégories","Citadine","Compacte","Familiale"};
+		String[] tabCat = {"Toutes cat�gories","Citadine","Compacte","Familiale"};
 		
 		this.setLayout(new GridLayout(1,6));
 		//Question 4
@@ -32,8 +32,6 @@ public class ChoixSelects extends JPanel{
 		//question 1
 		JComboBox c2 = new JComboBox(tabCat);
 		c2.addActionListener(cont);
-		
-		//JCheckBox c3 = new JCheckBox("3");
 		
 		// Date de début
 		JDateChooser c4 = cont.getDateD();

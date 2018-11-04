@@ -34,12 +34,21 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 	 */
 	private JDateChooser dateD, dateF; 
 	
+	private String immat="";
+	
 	/**
 	 * Constructeur
 	 * @param m Modele du controleur
 	 */
 	public ChangementFenetre(Modele m) {
 		model=m;
+		dateD = new JDateChooser();
+		dateF = new JDateChooser();
+	}
+	
+	public ChangementFenetre(Modele m,String im) {
+		model=m;
+		immat=im;
 		dateD = new JDateChooser();
 		dateF = new JDateChooser();
 	}
@@ -62,6 +71,14 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 				try {
 					model.rechercher();
 				} catch (SQLException e) { e.printStackTrace(); }
+			}
+			else if(((JButton)arg0.getSource()).getText().equals("reserve moi")) {
+					try {
+						model.mettreAjour(immat);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			}
 			//on passe en mode admin
 			else {
