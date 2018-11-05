@@ -1,6 +1,8 @@
 package Controlleurs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Date;
@@ -22,7 +24,7 @@ import Principale.Modele;
  * @author moreliere
  *
  */
-public class ChangementFenetre implements ActionListener, PropertyChangeListener{
+public class ChangementFenetre implements ActionListener, PropertyChangeListener, ItemListener{
 
 	/**
 	 * Modele du controleur
@@ -30,6 +32,8 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 	private Modele model;
 	
 	private boolean modeAgence = false;
+	
+	private int nbChoixClient = -1;
 	
 	/*
 	 * JDateChooser placé en attribut, car impossible de les différenciers autrement (sauf si tu as une autre idée) 
@@ -92,6 +96,14 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 			else if(((JButton)arg0.getSource()).getText().equals("Retour")) {
 				model.afficherAppli();
 			}
+			else if(((JButton)arg0.getSource()).getText().equals("GO")) {
+				try {
+					model.afficherClient(nbChoixClient);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			//on passe en mode admin
 			else {
 				model.modeAdmin();
@@ -141,5 +153,17 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 	
 	public JDateChooser getDateF() {
 		return dateF;
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent arg0) {
+		String res = ((String)arg0.getItem());
+		System.out.println(res);
+		if(res.equals("Tous")) {
+			res="-1";
+		}
+		nbChoixClient =Integer.parseInt(res);
+		
+		
 	}
 }

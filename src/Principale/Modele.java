@@ -66,6 +66,7 @@ public class Modele extends Observable{
 	}
 	
 	public void afficherAppli() {
+		resultat = new JPanel();
 		fenetreActu = new AffichageAppli(width,heigth,this);
 		fen.setContentPane(fenetreActu);
 		fen.revalidate();
@@ -73,6 +74,7 @@ public class Modele extends Observable{
 	
 	public void modeAdmin() {
 		if(fenetreActu instanceof AffichageAppli) {
+			resultat = new JPanel();
 			fenetreActu = new AffichageAdmin(width,heigth,this);
 			fen.setContentPane(fenetreActu);
 			fen.revalidate();
@@ -159,6 +161,48 @@ public class Modele extends Observable{
 			n.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
 	            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 			resultat.add(n);
+		}
+		setChanged();
+		notifyObservers();
+	}
+	
+	public void afficherClient(int nbChoixClient) throws SQLException {
+		System.out.println("afficher");
+		PreparedStatement stt = cnt.prepareStatement(" select NOM, VILLE, CODPOSTAL from CLIENT"
+													+" inner join DOSSIER D on CLIENT.CODE_CLI = D.CODE_CLI"
+													+" inner join VEHICULE V on D.NO_IMM = V.NO_IMM"
+													+" group by NOM, VILLE, CODPOSTAL"
+													+" having count(*) >= ?");
+		
+		stt.setInt(1, nbChoixClient);
+		ResultSet res = stt.executeQuery();
+		ArrayList<ArrayList<String>> tabRes = new ArrayList<ArrayList<String>>();
+		int i = 0;
+		
+		tabRes.add(new ArrayList<String>());
+		tabRes.get(i).add(res.getMetaData().getColumnName(1));
+		tabRes.get(i).add(res.getMetaData().getColumnName(2));
+		i++;
+		
+		while(res.next()) {
+			tabRes.add(new ArrayList<String>());
+			tabRes.get(i).add(res.getString(1));
+			tabRes.get(i).add(res.getString(2));
+			i++;
+		}
+		
+		stt.close();
+		res.close();
+		resultat.removeAll();
+		resultat.setLayout(new GridLayout(tabRes.size(),tabRes.get(0).size()));
+		for(ArrayList<String> tab : tabRes) {
+			for(String s : tab) {
+				JComponent text = null;
+				text = new JLabel(s);
+				text.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
+			            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+				resultat.add(text);
+			}
 		}
 		setChanged();
 		notifyObservers();
