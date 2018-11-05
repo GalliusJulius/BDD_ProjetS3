@@ -2,6 +2,8 @@ package graphique;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.event.AncestorListener;
@@ -19,25 +21,48 @@ import Controlleurs.ChangementFenetre;
  */
 public class ChoixSelects extends JPanel{
 	
+	JCheckBox c1;
+	JComboBox c2;
+	JDateChooser c4,c5;
+	
 	/**
 	 * Constructeur avec les differents boutons de contols (a definir)
 	 */
 	public ChoixSelects(ChangementFenetre cont) {
-		String[] tabCat = {"Toutes catégories","Citadine","Compacte","Familiale"};
+		String[] tabCat = {"Toutes cat�gories","Citadine","Compacte","Familiale"};
 		
 		this.setLayout(new GridLayout(1,6));
 		//Question 4
-		JCheckBox c1 = new JCheckBox("Mode Agence");
-		c1.addActionListener(cont);
+		c1 = new JCheckBox("Mode Agence");
+		c1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(c1.isSelected()) {
+					c2.setEnabled(false);
+					c4.setEnabled(false);
+					c5.setEnabled(false);
+					cont.setModeAgence(true);
+				}
+				else {
+					c2.setEnabled(true);
+					c4.setEnabled(true);
+					c5.setEnabled(true);
+					cont.setModeAgence(false);
+				}
+				
+			}
+			
+		});
 		//question 1
-		JComboBox c2 = new JComboBox(tabCat);
+		c2 = new JComboBox(tabCat);
 		c2.addActionListener(cont);
 		
 		// Date de début
-		JDateChooser c4 = cont.getDateD();
+		c4 = cont.getDateD();
 		c4.addPropertyChangeListener(cont);
 		// Date de fin
-		JDateChooser c5 = cont.getDateF();
+		c5 = cont.getDateF();
 		c5.addPropertyChangeListener(cont);
 		
 		//lancer la recherhe

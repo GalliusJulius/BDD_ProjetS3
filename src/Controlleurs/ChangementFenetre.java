@@ -29,6 +29,8 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 	 */
 	private Modele model;
 	
+	private boolean modeAgence = false;
+	
 	/*
 	 * JDateChooser placé en attribut, car impossible de les différenciers autrement (sauf si tu as une autre idée) 
 	 */
@@ -63,13 +65,19 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 			if(((JButton)arg0.getSource()).getText().equals("Se connecter")) {
 				try {
 					model.seConnecter();
+					model.afficherAppli();
 				} catch (SQLException e) { e.printStackTrace(); }
 			}
 			// Affiche le resultat
 			else if(((JButton)arg0.getSource()).getText().equals("Rechercher")) {
 				//System.out.println("Recherche...");
 				try {
-					model.rechercher();
+					if(!modeAgence) {
+						model.rechercher();
+					}
+					else {
+						model.rechercherAgence();
+					}
 				} catch (SQLException e) { e.printStackTrace(); }
 			}
 			else if(((JButton)arg0.getSource()).getText().equals("reserve moi")) {
@@ -79,6 +87,10 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+			}
+			
+			else if(((JButton)arg0.getSource()).getText().equals("Retour")) {
+				model.afficherAppli();
 			}
 			//on passe en mode admin
 			else {
@@ -115,6 +127,10 @@ public class ChangementFenetre implements ActionListener, PropertyChangeListener
 				model.setDateF(date);
 			}
 		}
+	}
+	
+	public void setModeAgence(boolean b) {
+		modeAgence = b;
 	}
 	
 	

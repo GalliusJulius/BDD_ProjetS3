@@ -6,10 +6,15 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+import Controlleurs.ChangementFenetre;
+import Principale.Modele;
+
 public class AffichageAdmin extends JPanel{
+	Modele model;
 	
-	public AffichageAdmin(int w, int h) {
+	public AffichageAdmin(int w, int h,Modele m) {
 		super();
+		model = m;
 		this.setPreferredSize(new Dimension(w,h));
 		this.setLayout(new BorderLayout());
 		//TOP
@@ -18,6 +23,12 @@ public class AffichageAdmin extends JPanel{
 		JComboBox nbChoix = new JComboBox(tab);
 		JButton go = new JButton("GO") ;
 		JPanel top = new JPanel();
+		
+		JPanel bottom = new JPanel();
+		JButton btn = new JButton("Retour");
+		btn.addActionListener(new ChangementFenetre(model));
+		bottom.add(btn);
+		
 		top.setLayout(new GridLayout(1,3));
 		top.add(lab);
 		top.add(nbChoix);
@@ -29,6 +40,7 @@ public class AffichageAdmin extends JPanel{
 		//on ajoute tt
 		this.add(top,BorderLayout.NORTH );
 		this.add(bas, BorderLayout.CENTER);
+		this.add(bottom, BorderLayout.SOUTH);
 	}
 	
 	

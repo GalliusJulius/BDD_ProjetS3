@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -61,17 +62,18 @@ public class Modele extends Observable{
 			cnt = DriverManager.getConnection(url, login, mdp);
 			// Vérifie que la connection est bien effectuée :
 			System.out.println("Connecté : " + cnt.isValid(100));
-			
-			fenetreActu = new AffichageAppli(width,heigth,this);
-			fen.setContentPane(fenetreActu);
-			fen.revalidate();
-			
 		}
+	}
+	
+	public void afficherAppli() {
+		fenetreActu = new AffichageAppli(width,heigth,this);
+		fen.setContentPane(fenetreActu);
+		fen.revalidate();
 	}
 	
 	public void modeAdmin() {
 		if(fenetreActu instanceof AffichageAppli) {
-			fenetreActu = new AffichageAdmin(width,heigth);
+			fenetreActu = new AffichageAdmin(width,heigth,this);
 			fen.setContentPane(fenetreActu);
 			fen.revalidate();
 		}
@@ -85,7 +87,7 @@ public class Modele extends Observable{
 														 +" where LIBELLE like ? and VEHICULE.NO_IMM not in"
 														 +" (select NO_IMM from CALENDRIER"
 														 +" where ? <= DATEJOUR and ? >= DATEJOUR and PASLIBRE is not null)");
-		if(catVehicule.equals("Toutes catégories")){
+		if(catVehicule.equals("Toutes cat�gories")){
 			stt.setString(1, "%");
 		}
 		else {
@@ -113,7 +115,6 @@ public class Modele extends Observable{
 			i++;
 		}
 		
-		//System.out.println(tabRes);
 		stt.close();
 		res.close();
 		resultat.removeAll();
@@ -126,7 +127,7 @@ public class Modele extends Observable{
 					((JButton)text).addActionListener(new ChangementFenetre(this,tab.get(0)));
 				}
 				else{
-					text = new JTextArea(s);
+					text = new JLabel(s);
 				}
 				text.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
 			            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
@@ -137,6 +138,30 @@ public class Modele extends Observable{
 		setChanged();
 		notifyObservers();
 		//System.out.println("OK rechercher !");
+	}
+	
+	public void rechercherAgence() throws SQLException{
+		PreparedStatement stt = cnt.prepareStatement("SELECT AGENCE.CODE_AG from AGENCE INNER JOIN VEHICULE on AGENCE.CODE_AG = VEHICULE.CODE_AG"
+													 +" INNER JOIN CATEGORIE on VEHICULE.CODE_CATEG = CATEGORIE.CODE_CATEG"
+													 +" group by AGENCE.CODE_AG"
+													 +" having count(distinct VEHICULE.CODE_CATEG) = (select count(*) from CATEGORIE)");
+		ResultSet res = stt.executeQuery();
+		ArrayList<String> tabCodeAgence = new ArrayList<String>();
+		tabCodeAgence.add("Code agence");
+		while(res.next()) {
+			tabCodeAgence.add(res.getString(1));
+		}
+		stt.close();
+		resultat.removeAll();
+		resultat.setLayout(new GridLayout(tabCodeAgence.size(),1));
+		for(String temp : tabCodeAgence) {
+			JLabel n = new JLabel(temp);
+			n.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
+	            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+			resultat.add(n);
+		}
+		setChanged();
+		notifyObservers();
 	}
 	
 	public void mettreAjour(String immat) throws SQLException {
@@ -173,6 +198,7 @@ public class Modele extends Observable{
 			res.close();
 		}
 		double prix = 0.0;
+		int nbJour = 0;
 		if(stt != null) {
 			stt.close();
 			
@@ -189,14 +215,14 @@ public class Modele extends Observable{
 				prixHebdo = res.getDouble(2);
 			}
 			System.out.println(prixJour +" "+prixHebdo);
-			int nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24)); 
+			nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24)); 
 			prix = (nbJour%7*prixJour + ((int)(nbJour/7))*prixHebdo);
 			stt2.close();
 			
 		}
 		rechercher();
 		JOptionPane jop1 = new JOptionPane();
-		jop1.showMessageDialog(null, "Votre réservation est confirmé, elle coutera : " + prix + "€", "Tarif", JOptionPane.INFORMATION_MESSAGE);
+		jop1.showMessageDialog(null, "Votre r�servation de "+nbJour+" jours est confirm�, elle coutera : " + prix + "€", "Tarif", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public JPanel getFenetreActu() {
