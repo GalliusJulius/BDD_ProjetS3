@@ -1,13 +1,15 @@
 package Principale;
-import java.awt.Dimension;
 
-import javax.swing.*;
+import graphique.Fenetre;
+import javafx.application.Application;
 
+/**
+ * Classe principale de l'application.
+ */
 public class Principale {
 	
 	public static void main (String [] args) {
-		//on cree un modele qui va tout creer
-		Modele mod = new Modele(1000,500);
+		Application.launch(Fenetre.class, args);
 	}
 
 }

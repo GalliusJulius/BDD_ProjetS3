@@ -1,111 +1,163 @@
 package graphique;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.Border;
-
-import Controlleurs.ChangementFenetre;
 import Principale.Modele;
+import controleur.ChangementFenetre;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 /**
- * Classe du JPanel pour se connecter a la base de donnee
- * @author moreliere
- *
+ * Vue de la page d'acceuil [connection à la base de données] (Gridpane).
  */
-public class AffichageConnection extends JPanel {
-	/**
-	 *Champs a remplir et a verifier lors de la connction 
-	 */
-	private JTextField url,mdp,login;
+public class AffichageConnection extends GridPane {
 	
-	public AffichageConnection(int width,int heigh,Modele m) {
-		this.setPreferredSize(new Dimension(width,heigh));
-		this.setLayout(new GridLayout(5,1));
-		JLabel phrase = new JLabel("Bienvenue veuillez vous identifier sur votre base:");
-		url = new JTextField("url base de donnée");
-		url.addMouseListener(new MouseAdapter() {
-			public void mouseExited(MouseEvent e) {
-				if(url.getText().equals("")) {
-					url.setText("url base de donnée");
-				}
-			}
-			public void mouseEntered(MouseEvent e) {
+	/**
+	 * Champs à remplir et à verifier lors de la connection à la base de données.
+	 * Comprenant : l'url, le login et le mot de passe de la base de données (BDD). 
+	 */
+	private TextField url,mdp,login;
+	
+	/**
+	 * Constructeur de la vue.
+	 * @param width largeur de la vue.
+	 * @param height hauteur de la vue.
+	 * @param m modèle de l'application.
+	 */
+	public AffichageConnection(int width, int height, Modele m) {
+		this.setWidth(width);
+		this.setHeight(height);
+		Label phrase = new Label("Bienvenue veuillez vous identifier sur votre base :");
+		url = new TextField("url base de donnée");
+		url.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
 				if(url.getText().equals("url base de donnée")) {
 					url.setText("");
 				}
 			}
 		});
-		login = new JTextField("login utilisateur");
-		login.addMouseListener(new MouseAdapter() {
-			public void mouseExited(MouseEvent e) {
-				if(login.getText().equals("")) {
-					login.setText("login utilisateur");
+		
+		url.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if(url.getText().equals("")) {
+					url.setText("url base de donnée");
 				}
 			}
-			public void mouseEntered(MouseEvent e) {
+		});
+		
+		
+		login = new TextField("login utilisateur");
+		login.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
 				if(login.getText().equals("login utilisateur")) {
 					login.setText("");
 				}
 			}
 		});
-		mdp = new JTextField("Mot de passe");
-		mdp.addMouseListener(new MouseAdapter() {
-			public void mouseExited(MouseEvent e) {
-				if(mdp.getText().equals("")) {
-					mdp.setText("Mot de passe");
+		
+		login.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if(login.getText().equals("")) {
+					login.setText("login utilisateur");
 				}
 			}
-			public void mouseEntered(MouseEvent e) {
+		});
+		
+		
+		mdp = new TextField("Mot de passe");
+		mdp.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
 				if(mdp.getText().equals("Mot de passe")) {
 					mdp.setText("");
 				}
 			}
 		});
-		JButton connec = new JButton("Se connecter");
+		
+		mdp.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if(mdp.getText().equals("")) {
+					mdp.setText("Mot de passe");
+				}
+			}
+		});
+		
+		
+		
+		Button connec = new Button("Se connecter");
+		connec.setOnAction(new ChangementFenetre(m));
 		/**Border bordureText = BorderFactory.createEmptyBorder(0, 20, 0 , 20);
 		url.setBorder(bordureText);
 		login.setBorder(bordureText);
 		mdp.setBorder(bordureText);*/
-		Border bordure = BorderFactory.createEmptyBorder(heigh/8, width/6, heigh/8 , width/6);
+		Border bordure = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
 		this.setBorder(bordure);
-		this.add(phrase);
-		this.add(url);
-		this.add(login);
-		this.add(mdp);
-		this.add(connec);
-		connec.addActionListener(new ChangementFenetre(m));
+		
+		this.add(phrase, 0, 0);
+		this.add(url, 0, 1);
+		this.add(login, 0, 2);
+		this.add(mdp, 0, 3);
+		this.add(connec, 0, 4);
 	}
 
+	/**
+	 * Getter de l'url de la BDD.
+	 * @return url
+	 */
 	public String getUrl() {
 		return url.getText();
 	}
 
+	/**
+	 * Setter de l'url de la BDD.
+	 * @param url url de la BDD.
+	 */
 	public void setUrl(String url) {
 		this.url.setText(url);
 	}
 
+	/**
+	 * Getter du mot de passe de la BDD.
+	 * @return mot de passe.
+	 */
 	public String getMdp() {
 		return mdp.getText();
 	}
 
+	/**
+	 * Setter du mot de passe de la BDD.
+	 * @param mdp mot de passe de la BDD.
+	 */
 	public void setMdp(String mdp) {
 		this.mdp.setText(mdp);;
 	}
 
+	/**
+	 * Getter du login de la BDD.
+	 * @return login
+	 */
 	public String getLogin() {
 		return login.getText();
 	}
 
+	/**
+	 * Setter du login de la BDD.
+	 * @param login login de la BDD.
+	 */
 	public void setLogin(String login) {
 		this.login.setText(login);
 	}
-	
-	
 }

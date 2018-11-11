@@ -1,54 +1,92 @@
 package Principale;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Observable;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.io.*;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-
-import Controlleurs.ChangementFenetre;
+import controleur.ChangementFenetre;
 import graphique.AffichageAdmin;
 import graphique.AffichageAppli;
 import graphique.Fenetre;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import graphique.AffichageConnection;
 
 /**
- * Modele de la vue (controle tout)
- * @author moreliere
- *
+ * Modèle de l'application.
+ * Ici, le modèle gère la connection à la base de données ainsi que les requêtes vers celle-ci.
+ * Il gère également le changement des différents affichages (AffchageAppli, AffichageConnection et AffichageAdmin). 
  */
 public class Modele extends Observable{
 	
-	private JPanel fenetreActu, resultat;
-	private JFrame fen;
+	/**
+	 * Fenêtre actuelle de l'application (ou panneau). 
+	 */
+	private Pane fenetreActu;
+	
+	/**
+	 * Table des résultats des requêtes (tableView). 
+	 */
+	private TableView<Contenu> resultat;
+	
+	/**
+	 * Elément sur lequel on y place des scènes.
+	 * La scène placée dans cet élément (via la fonction setScene()) représente l'affichage en cours.  
+	 */
+	private Stage stage;
+	
+	/**
+	 * Hauteur et largeur des affichages en cours. 
+	 */
 	private int width,heigth;
+	
+	/**
+	 * Mode dans lequel on se trouve dans le cas de l'affichage de l'application (vue AffichageAppli).
+	 * Le mode agence change lorsque l'utilisateur coche ou décoche la CheckBox présente dans l'affichage de l'application. 
+	 */
 	private boolean modeAgence;
+	
+	/**
+	 * Dates représentant la période d'une location d'un véhicule (une date de début et une date de fin). 
+	 */
 	private Date dateD, dateF;
+	
+	/**
+	 * Catégorie de véhicules choisi par l'utilisateur via la ComboBox de l'affichage de l'application (vue AffichageAppli).
+	 * Par défaut, toutes les catégories sont choisies.
+	 */
 	private String catVehicule ="Toutes catégories";
+	
+	/**
+	 * Connection à la base de données (objet indispensable pour l'execution des requêtes). 
+	 */
 	private Connection cnt;
 	
+	
+	/**
+	 * Constructeur du modèle.
+	 * @param w largeur de l'affichage de connection (et des autres affichages que l'on parcourira durant l'execution de l'application).
+	 * @param h hauteur de l'affichage de connection (et des autres affichages que l'on parcourira durant l'execution de l'application).
+	 */
 	public Modele(int w,int h) {
-		fenetreActu=new AffichageConnection(w,h,this);
 		width=w;
 		heigth=h;
-		fen=new Fenetre(fenetreActu);
-		resultat = new JPanel();
+		resultat = new TableView<Contenu>();
+		resultat.setEditable(false);
+		fenetreActu = new AffichageConnection(w,h,this);
 	}
 	
 	/**
-	 * Permet de se connecter a la base
-	 * @throws SQLException 
+	 * Méthode permettant de se connecter à la base de données (avec l'url, le login et le mot de passe de la BDD).
+	 * @throws SQLException
 	 */
 	public void seConnecter() throws SQLException {
 		if(fenetreActu instanceof AffichageConnection) {
@@ -65,22 +103,36 @@ public class Modele extends Observable{
 		}
 	}
 	
+	/**
+	 * Méthode permettant l'affichage de la vue AffichageAppli (et ses composants) dans l'application.
+	 */
 	public void afficherAppli() {
-		resultat = new JPanel();
-		fenetreActu = new AffichageAppli(width,heigth,this);
-		fen.setContentPane(fenetreActu);
-		fen.revalidate();
+		resultat = new TableView();
+		fenetreActu = new AffichageAppli(width, heigth, this);
+		Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
+		//scene.getStylesheets().add("path/stylesheet.css");
+		stage.setScene(scene);
+		
 	}
 	
+	/**
+	 * Méthode permettant l'affichage de la vue AffichageAdmin (et ses composants) dans l'application.
+	 */
 	public void modeAdmin() {
 		if(fenetreActu instanceof AffichageAppli) {
-			resultat = new JPanel();
+			resultat = new TableView();
 			fenetreActu = new AffichageAdmin(width,heigth,this);
-			fen.setContentPane(fenetreActu);
-			fen.revalidate();
+			Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
+			//scene.getStylesheets().add("path/stylesheet.css");
+			stage.setScene(scene);
 		}
 	}
 	
+	/**
+	 * Méthode permettant de rechercher la liste des véhicule disponible à une période données.
+	 * On affiche le résultat dans une table (TableView) avec la possibilité de réserver des véhicules.
+	 * @throws SQLException
+	 */
 	public void rechercher() throws SQLException {
 		
 		PreparedStatement stt = cnt.prepareStatement("SELECT DISTINCT VEHICULE.NO_IMM, VEHICULE.MODELE from VEHICULE"
@@ -89,85 +141,88 @@ public class Modele extends Observable{
 														 +" where LIBELLE like ? and VEHICULE.NO_IMM not in"
 														 +" (select NO_IMM from CALENDRIER"
 														 +" where ? <= DATEJOUR and ? >= DATEJOUR and PASLIBRE is not null)");
-		if(catVehicule.equals("Toutes cat�gories")){
+		if(catVehicule.equals("Toutes catégories")){
 			stt.setString(1, "%");
 		}
 		else {
 			stt.setString(1, catVehicule.toLowerCase());
 		}
-		stt.setString(1, catVehicule.toLowerCase());
+		
 		stt.setDate(2, dateD);
 		stt.setDate(3, dateF);
 		
 		ResultSet res = stt.executeQuery();
-		ArrayList<ArrayList<String>> tabRes = new ArrayList<ArrayList<String>>();
-		int i = 0;
 		
-		tabRes.add(new ArrayList<String>());
-		tabRes.get(i).add(res.getMetaData().getColumnName(1));
-		tabRes.get(i).add(res.getMetaData().getColumnName(2));
-		tabRes.get(i).add("Reserver maintenant");
-		i++;
+		TableColumn<Contenu, String> t1 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(1));
+		TableColumn<Contenu, String> t2 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(2));
+		TableColumn<Contenu, String> t3 = new TableColumn<Contenu, String>("Reserver maintenant");
+		t1.setCellValueFactory(new PropertyValueFactory<>("no_im"));
+		t2.setCellValueFactory(new PropertyValueFactory<>("modele"));
+		t3.setCellValueFactory(new PropertyValueFactory<>("reservation"));
+		
+		ObservableList<Contenu> data = FXCollections.observableArrayList();
 		
 		while(res.next()) {
-			tabRes.add(new ArrayList<String>());
-			tabRes.get(i).add(res.getString(1));
-			tabRes.get(i).add(res.getString(2));
-			tabRes.get(i).add("btn");
-			i++;
+			Button b = new Button("Réservez moi");
+			b.setOnAction(new ChangementFenetre(this, res.getString(1)));
+			
+			data.add(new Contenu(res.getString(1), res.getString(2), b));
 		}
 		
 		stt.close();
 		res.close();
-		resultat.removeAll();
-		resultat.setLayout(new GridLayout(tabRes.size(),tabRes.get(0).size()));
-		for(ArrayList<String> tab : tabRes) {
-			for(String s : tab) {
-				JComponent text = null;
-				if(s.equals("btn")) {
-					text = new JButton("reserve moi");
-					((JButton)text).addActionListener(new ChangementFenetre(this,tab.get(0)));
-				}
-				else{
-					text = new JLabel(s);
-				}
-				text.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
-			            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-				resultat.add(text);
-			}
-		}
+		
+		resultat.getItems().clear();
+		resultat.getColumns().clear();
+		
+		resultat.setItems(data);
+		resultat.getColumns().setAll(t1, t2, t3);
 		
 		setChanged();
 		notifyObservers();
-		//System.out.println("OK rechercher !");
 	}
 	
+	/**
+	 * Méthode permettant de rechercher des agences qui possèdes toutes les catégories de véhicules (de la base de données).
+	 * Le résultat est stocké et affcihé dans la table de résultats (TableView).
+	 * @throws SQLException
+	 */
 	public void rechercherAgence() throws SQLException{
 		PreparedStatement stt = cnt.prepareStatement("SELECT AGENCE.CODE_AG from AGENCE INNER JOIN VEHICULE on AGENCE.CODE_AG = VEHICULE.CODE_AG"
 													 +" INNER JOIN CATEGORIE on VEHICULE.CODE_CATEG = CATEGORIE.CODE_CATEG"
 													 +" group by AGENCE.CODE_AG"
 													 +" having count(distinct VEHICULE.CODE_CATEG) = (select count(*) from CATEGORIE)");
 		ResultSet res = stt.executeQuery();
-		ArrayList<String> tabCodeAgence = new ArrayList<String>();
-		tabCodeAgence.add("Code agence");
+		
+		TableColumn<Contenu, String> t1 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(1));
+		t1.setCellValueFactory(new PropertyValueFactory<>("code_ag"));
+		
+		ObservableList<Contenu> data = FXCollections.observableArrayList();
+		
 		while(res.next()) {
-			tabCodeAgence.add(res.getString(1));
+			data.add(new Contenu(res.getString(1)));
 		}
+		
 		stt.close();
-		resultat.removeAll();
-		resultat.setLayout(new GridLayout(tabCodeAgence.size(),1));
-		for(String temp : tabCodeAgence) {
-			JLabel n = new JLabel(temp);
-			n.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
-	            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-			resultat.add(n);
-		}
+		res.close();
+		
+		resultat.getItems().clear();
+		resultat.getColumns().clear();
+		
+		resultat.setItems(data);
+		resultat.getColumns().setAll(t1);
+		
 		setChanged();
 		notifyObservers();
 	}
 	
+	/**
+	 * Méthode permettant de rechercher les clients ayant loués un certain nombre de modèles de véhicules différents.
+	 * Le résultat est stocké et affcihé dans la table de résultats (TableView).
+	 * @param nbChoixClient
+	 * @throws SQLException
+	 */
 	public void afficherClient(int nbChoixClient) throws SQLException {
-		System.out.println("afficher");
 		PreparedStatement stt = cnt.prepareStatement(" select NOM, VILLE, CODPOSTAL from CLIENT"
 													+" inner join DOSSIER D on CLIENT.CODE_CLI = D.CODE_CLI"
 													+" inner join VEHICULE V on D.NO_IMM = V.NO_IMM"
@@ -176,44 +231,45 @@ public class Modele extends Observable{
 		
 		stt.setInt(1, nbChoixClient);
 		ResultSet res = stt.executeQuery();
-		ArrayList<ArrayList<String>> tabRes = new ArrayList<ArrayList<String>>();
-		int i = 0;
 		
-		tabRes.add(new ArrayList<String>());
-		tabRes.get(i).add(res.getMetaData().getColumnName(1));
-		tabRes.get(i).add(res.getMetaData().getColumnName(2));
-		i++;
+		
+		TableColumn<Contenu, String> t1 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(1));
+		TableColumn<Contenu, String> t2 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(2));
+		TableColumn<Contenu, String> t3 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(3));
+		t1.setCellValueFactory(new PropertyValueFactory<>("nom"));
+		t2.setCellValueFactory(new PropertyValueFactory<>("ville"));
+		t3.setCellValueFactory(new PropertyValueFactory<>("cp"));
+		
+		ObservableList<Contenu> data = FXCollections.observableArrayList();
 		
 		while(res.next()) {
-			tabRes.add(new ArrayList<String>());
-			tabRes.get(i).add(res.getString(1));
-			tabRes.get(i).add(res.getString(2));
-			i++;
+			data.add(new Contenu(res.getString(1), res.getString(2), res.getString(3)));
 		}
 		
 		stt.close();
 		res.close();
-		resultat.removeAll();
-		resultat.setLayout(new GridLayout(tabRes.size(),tabRes.get(0).size()));
-		for(ArrayList<String> tab : tabRes) {
-			for(String s : tab) {
-				JComponent text = null;
-				text = new JLabel(s);
-				text.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK), 
-			            	   BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-				resultat.add(text);
-			}
-		}
+		
+		resultat.getItems().clear();
+		resultat.getColumns().clear();
+		
+		resultat.setItems(data);
+		resultat.getColumns().setAll(t1, t2, t3);
+		
 		setChanged();
 		notifyObservers();
 	}
 	
+	/**
+	 * Métode permettant de mettre à jour (ou d'insérer) la réservation d'un véhicule à une période choisie.
+	 * Cette méthode met également l'affichage de la table résultat à jour.
+	 * @param immat
+	 * @throws SQLException
+	 */
 	public void mettreAjour(String immat) throws SQLException {
 		//on prend la date debut
 		PreparedStatement stt = null;
 		Date temp = (Date) dateD.clone();
 		//tant que la date incremete est plus petit ou egale a la date max
-		System.out.println(immat);
 		while(temp.before(dateF) || temp.equals(dateF)) {
 			//on regarde si la reservation existe pour cette date
 			stt = cnt.prepareStatement("select NO_IMM from CALENDRIER "
@@ -247,9 +303,9 @@ public class Modele extends Observable{
 			stt.close();
 			
 			PreparedStatement stt2 = cnt.prepareStatement("select TARIF_JOUR, TARIF_HEBDO from TARIF"
-					+" inner join CATEGORIE on TARIF.CODE_TARIF = CATEGORIE.CODE_TARIF"
-					+" inner join VEHICULE on CATEGORIE.CODE_CATEG = VEHICULE.CODE_CATEG" 
-					+" where MODELE like (select MODELE from VEHICULE where NO_IMM like ?)");
+														 +" inner join CATEGORIE on TARIF.CODE_TARIF = CATEGORIE.CODE_TARIF"
+														 +" inner join VEHICULE on CATEGORIE.CODE_CATEG = VEHICULE.CODE_CATEG" 
+														 +" where MODELE like (select MODELE from VEHICULE where NO_IMM like ?)");
 			stt2.setString(1, immat);
 			
 			ResultSet res = stt2.executeQuery();			
@@ -258,43 +314,92 @@ public class Modele extends Observable{
 				prixJour = res.getDouble(1);
 				prixHebdo = res.getDouble(2);
 			}
-			System.out.println(prixJour +" "+prixHebdo);
 			nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24)); 
 			prix = (nbJour%7*prixJour + ((int)(nbJour/7))*prixHebdo);
 			stt2.close();
 			
 		}
 		rechercher();
-		JOptionPane jop1 = new JOptionPane();
-		jop1.showMessageDialog(null, "Votre r�servation de "+nbJour+" jours est confirm�, elle coutera : " + prix + "€", "Tarif", JOptionPane.INFORMATION_MESSAGE);
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Votre Réservation");
+		alert.setHeaderText(null);
+		alert.setContentText("Votre réservation de " + nbJour + " jours est confirmée, elle coutera : " + prix + "€");
+
+		alert.showAndWait();
 	}
 
-	public JPanel getFenetreActu() {
+	/**
+	 * Getter de la fenêtre actuelle.
+	 * @return fenêtre actuelle
+	 */
+	public Pane getFenetreActu() {
 		return fenetreActu;
 	}
 
-	public void setFenetreActu(JPanel fenetreActu) {
+	/**
+	 * Setter de la fenêtre actuelle.
+	 * @param fenetreActu fenêtre actuelle.
+	 */
+	public void setFenetreActu(Pane fenetreActu) {
 		this.fenetreActu = fenetreActu;
 	}
 	
 	
+	/**
+	 * Setter de la catégorie de véhicule.
+	 * @param s catégorie de véhicule
+	 */
 	public void setCatVehicule(String s) {
 		catVehicule = s;
 	}
 	
+	/**
+	 * Setter de la date de début (de la période à choisir).
+	 * @param d date de début
+	 */
 	public void setDateD(Date d) {
 		dateD = d;
 	}
 	
+	/**
+	 * Setter de la date de fin.
+	 * @param d date de fin
+	 */
 	public void setDateF(Date d) {
 		dateF = d;
 	}
 	
+	/**
+	 * Setter du mode agence.
+	 * @param b mode agence (boolean)
+	 */
 	public void setModeAgence(boolean b) {
 		modeAgence = b;
 	}
 	
-	public JPanel getResultat() {
+	/**
+	 * Getter du mode agence.
+	 * @return mode agence (boolean)
+	 */
+	public boolean getModeAgence() {
+		return modeAgence;
+	}
+	
+	/**
+	 * Getter de la table de résultats (TableView).
+	 * @return table de résultats
+	 */
+	public TableView getResultat() {
 		return resultat;
 	}
+
+	/**
+	 * Setter de l'élément permettant le changement des scènes (ou des affichages).
+	 * @param st élément en question
+	 */
+	public void setStage(Stage st) {
+		stage = st;
+	}
 }
+
