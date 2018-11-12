@@ -1,4 +1,4 @@
-package questionConsole;
+package QuestionConsole;
 
 import java.sql.Connection;
 import java.sql.Date;

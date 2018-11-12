@@ -1,4 +1,4 @@
-package principale;
+package Principale;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import questionConsole.Question1;
-import questionConsole.Question4;
-import questionConsole.Question5;
+import QuestionConsole.Question1;
+import QuestionConsole.Question4;
+import QuestionConsole.Question5;
 
 /**
  * Permet de creer le mode console et de l'utiliser
