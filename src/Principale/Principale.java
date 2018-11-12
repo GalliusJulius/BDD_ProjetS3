@@ -1,9 +1,11 @@
 package Principale;
-import java.awt.Dimension;
 import java.util.Scanner;
+import graphique.Fenetre;
+import javafx.application.Application;
 
-import javax.swing.*;
-
+/**
+ * Classe principale de l'application.
+ */
 public class Principale {
 	
 	public static void main (String [] args) {
@@ -14,7 +16,7 @@ public class Principale {
 			Modele mod = new Modele(1000,500);
 		}
 		else {
-			ModeConsole mod = new ModeConsole();
+			Application.launch(Fenetre.class, args);
 		}
 	}
 
