@@ -1,4 +1,4 @@
-package principale;
+package Principale;
 
 import java.util.Scanner;
 import graphique.Fenetre;
