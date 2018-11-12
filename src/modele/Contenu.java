@@ -1,4 +1,4 @@
-package Principale;
+package modele;
 
 import javafx.scene.control.Button;
 
@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
  * Cette classe sert uniquement à ce que l'on puisse afficher les données résultantes (d'une requête) dans la table (TableView) du modèle.
  * Chaque constructeur correspond à un résultat d'une requête se trouvant dans le modèle.
  */
-public class Contenu {
+public class Contenu implements Table{
 	/**
 	 * Les différents résultats que l'on peut obtenir lors de l'execution d'une requête.
 	 * Peut comprendre : l'immatriculation d'un véhicule, le modèle d'un véhicule, le code d'une agence, le nom d'un client, la ville d'un client, le code postal d'un client.

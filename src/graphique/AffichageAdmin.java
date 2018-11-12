@@ -2,8 +2,6 @@ package graphique;
 
 import java.util.Observable;
 import java.util.Observer;
-
-import Principale.Modele;
 import controleur.ChangementFenetre;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,8 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import modele.Modele;
 
 /**
  * Vue du mode administrateur (Gridpane).
@@ -49,18 +48,23 @@ public class AffichageAdmin extends GridPane implements Observer{
 		
 		GridPane top = new GridPane();
 		ComboBox<String> nbChoix = new ComboBox<String>(tab);
-		//nbChoix.setOnAction(control);
+		nbChoix.getSelectionModel().selectFirst();
 		nbChoix.valueProperty().addListener(control); // Changed
-		Button go = new Button("GO") ;
-		go.setOnAction(control);
+		Button bAff = new Button("Afficher") ;
+		bAff.setOnAction(control);
 		top.add(lab, 0, 0);
 		top.add(nbChoix, 1, 0);
-		top.add(go, 2, 0);
+		top.add(bAff, 2, 0);
 		
-		StackPane bottom = new StackPane();
-		Button btn = new Button("Retour");
-		btn.setOnAction(control);
-		bottom.getChildren().add(btn);
+		Button bRetour = new Button("Retour");
+		bRetour.setOnAction(control);
+		
+		Button bAudit = new Button("Afficher la table Audit");
+		bAudit.setOnAction(control);
+		
+		FlowPane bottom = new FlowPane();
+		bottom.getChildren().add(bRetour);
+		bottom.getChildren().add(bAudit);
 		bottom.setAlignment(Pos.CENTER);
 		
 		m.addObserver(this);

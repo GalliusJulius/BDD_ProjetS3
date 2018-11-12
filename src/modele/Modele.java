@@ -1,4 +1,4 @@
-package Principale;
+package modele;
 
 import java.sql.*;
 import java.util.Calendar;
@@ -35,7 +35,7 @@ public class Modele extends Observable{
 	/**
 	 * Table des résultats des requêtes (tableView). 
 	 */
-	private TableView<Contenu> resultat;
+	private TableView<Table> resultat;
 	
 	/**
 	 * Elément sur lequel on y place des scènes.
@@ -79,7 +79,7 @@ public class Modele extends Observable{
 	public Modele(int w,int h) {
 		width=w;
 		heigth=h;
-		resultat = new TableView<Contenu>();
+		resultat = new TableView<Table>();
 		resultat.setEditable(false);
 		fenetreActu = new AffichageConnection(w,h,this);
 	}
@@ -153,17 +153,17 @@ public class Modele extends Observable{
 		
 		ResultSet res = stt.executeQuery();
 		
-		TableColumn<Contenu, String> t1 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(1));
-		TableColumn<Contenu, String> t2 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(2));
-		TableColumn<Contenu, String> t3 = new TableColumn<Contenu, String>("Reserver maintenant");
+		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
+		TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
+		TableColumn<Table, String> t3 = new TableColumn<Table, String>("Reserver maintenant");
 		t1.setCellValueFactory(new PropertyValueFactory<>("no_im"));
 		t2.setCellValueFactory(new PropertyValueFactory<>("modele"));
 		t3.setCellValueFactory(new PropertyValueFactory<>("reservation"));
 		
-		ObservableList<Contenu> data = FXCollections.observableArrayList();
+		ObservableList<Table> data = FXCollections.observableArrayList();
 		
 		while(res.next()) {
-			Button b = new Button("Réservez moi");
+			Button b = new Button("Réserver");
 			b.setOnAction(new ChangementFenetre(this, res.getString(1)));
 			
 			data.add(new Contenu(res.getString(1), res.getString(2), b));
@@ -194,10 +194,10 @@ public class Modele extends Observable{
 													 +" having count(distinct VEHICULE.CODE_CATEG) = (select count(*) from CATEGORIE)");
 		ResultSet res = stt.executeQuery();
 		
-		TableColumn<Contenu, String> t1 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(1));
+		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
 		t1.setCellValueFactory(new PropertyValueFactory<>("code_ag"));
 		
-		ObservableList<Contenu> data = FXCollections.observableArrayList();
+		ObservableList<Table> data = FXCollections.observableArrayList();
 		
 		while(res.next()) {
 			data.add(new Contenu(res.getString(1)));
@@ -233,14 +233,14 @@ public class Modele extends Observable{
 		ResultSet res = stt.executeQuery();
 		
 		
-		TableColumn<Contenu, String> t1 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(1));
-		TableColumn<Contenu, String> t2 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(2));
-		TableColumn<Contenu, String> t3 = new TableColumn<Contenu, String>(res.getMetaData().getColumnName(3));
+		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
+		TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
+		TableColumn<Table, String> t3 = new TableColumn<Table, String>(res.getMetaData().getColumnName(3));
 		t1.setCellValueFactory(new PropertyValueFactory<>("nom"));
 		t2.setCellValueFactory(new PropertyValueFactory<>("ville"));
 		t3.setCellValueFactory(new PropertyValueFactory<>("cp"));
 		
-		ObservableList<Contenu> data = FXCollections.observableArrayList();
+		ObservableList<Table> data = FXCollections.observableArrayList();
 		
 		while(res.next()) {
 			data.add(new Contenu(res.getString(1), res.getString(2), res.getString(3)));
@@ -327,6 +327,49 @@ public class Modele extends Observable{
 		alert.setContentText("Votre réservation de " + nbJour + " jours est confirmée, elle coutera : " + prix + "€");
 
 		alert.showAndWait();
+	}
+	
+	public void afficherTableAudit() throws SQLException {
+		PreparedStatement stt = null;
+		try {
+			stt = cnt.prepareStatement("select * from Audit_");
+		} catch (SQLException e) {}
+		
+		if(stt != null) {
+			
+			ResultSet res = stt.executeQuery();
+			
+			TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
+			TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
+			TableColumn<Table, String> t3 = new TableColumn<Table, String>(res.getMetaData().getColumnName(3));
+			TableColumn<Table, String> t4 = new TableColumn<Table, String>(res.getMetaData().getColumnName(4));
+			TableColumn<Table, String> t5 = new TableColumn<Table, String>(res.getMetaData().getColumnName(5));
+			t1.setCellValueFactory(new PropertyValueFactory<>("num_doss"));
+			t2.setCellValueFactory(new PropertyValueFactory<>("date"));
+			t3.setCellValueFactory(new PropertyValueFactory<>("nom"));
+			t4.setCellValueFactory(new PropertyValueFactory<>("marque"));
+			t5.setCellValueFactory(new PropertyValueFactory<>("modele"));
+			
+			ObservableList<Table> data = FXCollections.observableArrayList();
+			
+			while(res.next()) {
+				data.add(new Audit(res.getInt(1), res.getDate(2), res.getString(3), res.getString(4), res.getString(5)));
+			}
+			
+			stt.close();
+			res.close();
+			
+			resultat.getItems().clear();
+			resultat.getColumns().clear();
+			
+			resultat.setItems(data);
+			resultat.getColumns().setAll(t1, t2, t3, t4, t5);
+			
+			setChanged();
+			notifyObservers();
+			
+			
+		}
 	}
 
 	/**

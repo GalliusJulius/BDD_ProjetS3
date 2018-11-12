@@ -1,0 +1,33 @@
+
+
+.Label{
+	-fx-text-fill: white;
+	-fx-font-size : 25;
+}
+
+
+.Button{
+	/* -fx-alignment : center; */
+	 -fx-background-color:
+		linear-gradient(#f0f7fd, #d4dbe1),
+		linear-gradient(#f5fcff 0%, #d7dde4 20%, #d4dbe1 100%),
+		linear-gradient(#e1e7ee 0%, #f2f9fc 50%);
+    -fx-background-radius: 13,12,11;
+    -fx-background-insets: 0,1,2;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+
+.TextField{
+	/* -fx-vgap : 10; */
+}
+
+.GridPane{
+	-fx-font-size : 20;
+	-fx-alignment : center;
+	-fx-grid-lines-visible : false;
+	-fx-vgap : 15;
+	-fx-background-color: #32393f;
+}
+
