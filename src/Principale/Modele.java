@@ -258,7 +258,6 @@ public class Modele extends Observable{
 				prixJour = res.getDouble(1);
 				prixHebdo = res.getDouble(2);
 			}
-			System.out.println(prixJour +" "+prixHebdo);
 			nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24)); 
 			prix = (nbJour%7*prixJour + ((int)(nbJour/7))*prixHebdo);
 			stt2.close();
