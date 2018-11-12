@@ -1,5 +1,6 @@
 package Principale;
 import java.util.Scanner;
+
 import graphique.Fenetre;
 import javafx.application.Application;
 
@@ -13,10 +14,10 @@ public class Principale {
 		System.out.println("Vous allez choisir entre le mode graphique ou le mode console, pour le mode graphique tapez 1 sinon tapez n'importe quoi d'autre!");
 		String rep = sc.next();
 		if(rep.equals("1")) {
-			Modele mod = new Modele(1000,500);
+			Application.launch(Fenetre.class, args);
 		}
 		else {
-			Application.launch(Fenetre.class, args);
+			ModeConsole mod = new ModeConsole();
 		}
 	}
 
