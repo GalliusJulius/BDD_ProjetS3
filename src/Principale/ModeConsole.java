@@ -9,6 +9,7 @@ import java.util.Scanner;
 import QuestionConsole.Question1;
 import QuestionConsole.Question4;
 import QuestionConsole.Question5;
+import QuestionConsole.Question6a;
 
 /**
  * Permet de creer le mode console et de l'utiliser
@@ -34,6 +35,7 @@ public class ModeConsole {
 	public void principale() {
 		boolean errone = false;
 		try {
+			//TODO : faire une saisie clavier pour la connec (plus simple pour se connecter pour dev)
 			cnt = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","victor","123");
 		} catch (SQLException e) {
 			System.out.println("Connection échoué!");
@@ -105,6 +107,16 @@ public class ModeConsole {
 				}
 				break;
 			case "4":
+				System.out.println("Vous etes dans le mode pour vérifier les triggers, tapez 1 pour vérifier le 1er sinon tapez autre chose");
+				String trig = sc.next();
+				if(trig.equals("1")) {
+					try {
+						Question6a.repondreQuestion(cnt);
+					} catch (SQLException e) {
+						System.out.println("erreur sql :");
+						e.printStackTrace();
+					}
+				}
 				break;
 			default :
 				errone = true;
