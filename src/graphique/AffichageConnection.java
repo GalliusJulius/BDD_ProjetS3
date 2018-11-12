@@ -1,6 +1,5 @@
 package graphique;
 
-import Principale.Modele;
 import controleur.ChangementFenetre;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -14,6 +13,7 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import modele.Modele;
 
 /**
  * Vue de la page d'acceuil [connection à la base de données] (Gridpane).
@@ -35,8 +35,14 @@ public class AffichageConnection extends GridPane {
 	public AffichageConnection(int width, int height, Modele m) {
 		this.setWidth(width);
 		this.setHeight(height);
+		this.getStyleClass().add("GridPane");
+		
 		Label phrase = new Label("Bienvenue veuillez vous identifier sur votre base :");
+		phrase.getStyleClass().add("Label");
+		
 		url = new TextField("url base de donnée");
+		url.getStyleClass().add("TextField");
+		
 		url.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -57,6 +63,8 @@ public class AffichageConnection extends GridPane {
 		
 		
 		login = new TextField("login utilisateur");
+		login.getStyleClass().add("TextField");
+		
 		login.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -77,6 +85,8 @@ public class AffichageConnection extends GridPane {
 		
 		
 		mdp = new TextField("Mot de passe");
+		mdp.getStyleClass().add("TextField");
+		
 		mdp.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
@@ -98,6 +108,7 @@ public class AffichageConnection extends GridPane {
 		
 		
 		Button connec = new Button("Se connecter");
+		connec.getStyleClass().add("Button");
 		connec.setOnAction(new ChangementFenetre(m));
 		/**Border bordureText = BorderFactory.createEmptyBorder(0, 20, 0 , 20);
 		url.setBorder(bordureText);

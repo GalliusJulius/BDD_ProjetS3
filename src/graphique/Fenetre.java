@@ -1,10 +1,10 @@
 package graphique;
 
-import Principale.Modele;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import modele.Modele;
 
 /**
  * Fenêtre principale (ou on peut parler d'application) sur laquelle est chargée les différentes scènes (ou affichages) au cours de l'execution de l'application.
@@ -61,7 +61,7 @@ public class Fenetre extends Application {
 		stage.setWidth(WIDTH);
 		stage.setHeight(HEIGHT);
 		
-		//affichage.getStylesheets().add("path/stylesheet.css");
+		affichage.getStylesheets().add(getClass().getResource("../css/acceuil.css").toExternalForm());
 		stage.setScene(affichage);
 		stage.show();
 	}

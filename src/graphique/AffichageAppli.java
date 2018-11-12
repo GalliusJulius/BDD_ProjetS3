@@ -2,13 +2,13 @@ package graphique;
 import java.util.Observable;
 import java.util.Observer;
 
-import Principale.Modele;
 import controleur.ChangementFenetre;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import modele.Modele;
 
 /**
  * Vue de l'application [après la page d'acceuil] (Gridpane).

@@ -3,7 +3,7 @@ package controleur;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import Principale.Modele;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import modele.Modele;
 
 /**
  * Controleur de toutes les vues, gère tous les événements de tous les composants présents dans l'application.
@@ -89,7 +90,7 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 					}
 				} catch (SQLException expt) { expt.printStackTrace(); }
 			}
-			else if(((Button)e.getSource()).getText().equals("Réservez moi")) {
+			else if(((Button)e.getSource()).getText().equals("Réserver")) {
 					try {
 						model.mettreAjour(immat);
 					} catch (SQLException expt) { expt.printStackTrace(); }
@@ -98,22 +99,32 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 			else if(((Button)e.getSource()).getText().equals("Retour")) {
 				model.afficherAppli();
 			}
-			else if(((Button)e.getSource()).getText().equals("GO")) {
+			else if(((Button)e.getSource()).getText().equals("Afficher")) {
 				try {
 					model.afficherClient(nbChoixClient);
 				} catch (SQLException expt) { expt.printStackTrace(); }
 			}
-			//on passe en mode admin
-			else {
+			else if(((Button)e.getSource()).getText().equals("Afficher la table Audit")){
+				try {
+					model.afficherTableAudit();
+				} catch (SQLException e1) { e1.printStackTrace(); }
+			}
+			else if(((Button)e.getSource()).getText().equals("Mode Admin")){
 				model.modeAdmin();
 			}
-		} else if(e.getSource() instanceof ComboBox) {
+			
+		}
+		else if(e.getSource() instanceof ComboBox) {
 			model.setCatVehicule((String) ((ComboBox)e.getSource()).getValue());
-		} else if(e.getSource() instanceof CheckBox) {
+			
+		}
+		else if(e.getSource() instanceof CheckBox) {
 			if(((CheckBox)e.getSource()).getText().equals("Mode Agence")) {
 				model.setModeAgence(((CheckBox)e.getSource()).isSelected());
+				
 			}
-		} else if(e.getSource() instanceof DatePicker) {
+		}
+		else if(e.getSource() instanceof DatePicker) {
 			LocalDate ldate = ((DatePicker)e.getSource()).getValue();
 			Date date = calculerDate(ldate);
 			
