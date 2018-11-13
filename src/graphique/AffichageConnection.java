@@ -4,6 +4,7 @@ import controleur.ChangementFenetre;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
@@ -25,7 +26,8 @@ public class AffichageConnection extends GridPane {
 	 * Champs à remplir et à verifier lors de la connection à la base de données.
 	 * Comprenant : l'url, le login et le mot de passe de la base de données (BDD). 
 	 */
-	private TextField url,mdp,login;
+	private TextField url, login;
+	private PasswordField mdp;
 	
 	/**
 	 * Constructeur de la vue.
@@ -38,75 +40,28 @@ public class AffichageConnection extends GridPane {
 		this.setHeight(height);
 		this.getStyleClass().add("GridPane");
 		
-		Label phrase = new Label("Bienvenue veuillez vous identifier sur votre base :");
-		phrase.getStyleClass().add("Label");
-		VBox boxPhrase = new VBox(phrase);
+		Label phrase1 = new Label("Bienvenue !");
+		Label phrase2 = new Label("Veuillez vous identifier sur votre base :");
+		phrase1.getStyleClass().add("Label");
+		phrase2.getStyleClass().add("Label");
+		VBox boxPhrase = new VBox(phrase1, phrase2);
 		boxPhrase.getStyleClass().add("PLabel");
 		
-		url = new TextField("url base de donnée");
+		url = new TextField();
 		url.getStyleClass().add("TextField");
-		
-		url.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				if(url.getText().equals("url base de donnée")) {
-					url.setText("");
-				}
-			}
-		});
-		
-		url.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				if(url.getText().equals("")) {
-					url.setText("url base de donnée");
-				}
-			}
-		});
+		url.setPromptText("URL");
+		url.setFocusTraversable(false);
 		
 		
-		login = new TextField("login utilisateur");
+		login = new TextField();
 		login.getStyleClass().add("TextField");
-		
-		login.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				if(login.getText().equals("login utilisateur")) {
-					login.setText("");
-				}
-			}
-		});
-		
-		login.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				if(login.getText().equals("")) {
-					login.setText("login utilisateur");
-				}
-			}
-		});
+		login.setPromptText("Identifiant");
+		login.setFocusTraversable(false);
 		
 		
-		mdp = new TextField("Mot de passe");
-		mdp.getStyleClass().add("TextField");
-		
-		mdp.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				if(mdp.getText().equals("Mot de passe")) {
-					mdp.setText("");
-				}
-			}
-		});
-		
-		mdp.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				if(mdp.getText().equals("")) {
-					mdp.setText("Mot de passe");
-				}
-			}
-		});
+		mdp = new PasswordField();
+		mdp.setPromptText("Mot de passe");
+		mdp.setFocusTraversable(false);
 		
 		
 		

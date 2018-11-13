@@ -106,6 +106,12 @@ public class Modele extends Observable{
 	public void connectionEchouee() {
 		stage.getScene().getStylesheets().clear();
 		stage.getScene().getStylesheets().add(getClass().getResource("../css/echecConnection.css").toExternalForm());
+		
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Connection Echouée");
+		alert.setHeaderText(null);
+		alert.setContentText("Connection Impossible !\nVeuillez vérifier vos informations pour continuer.");
+		alert.showAndWait();
 	}
 	
 	/**
