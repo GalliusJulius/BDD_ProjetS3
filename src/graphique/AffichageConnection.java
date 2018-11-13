@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import modele.Modele;
 
@@ -39,6 +40,8 @@ public class AffichageConnection extends GridPane {
 		
 		Label phrase = new Label("Bienvenue veuillez vous identifier sur votre base :");
 		phrase.getStyleClass().add("Label");
+		VBox boxPhrase = new VBox(phrase);
+		boxPhrase.getStyleClass().add("PLabel");
 		
 		url = new TextField("url base de donnée");
 		url.getStyleClass().add("TextField");
@@ -110,6 +113,8 @@ public class AffichageConnection extends GridPane {
 		Button connec = new Button("Se connecter");
 		connec.getStyleClass().add("Button");
 		connec.setOnAction(new ChangementFenetre(m));
+		VBox boxConn = new VBox(connec);
+		boxConn.getStyleClass().add("PButton");
 		/**Border bordureText = BorderFactory.createEmptyBorder(0, 20, 0 , 20);
 		url.setBorder(bordureText);
 		login.setBorder(bordureText);
@@ -117,11 +122,11 @@ public class AffichageConnection extends GridPane {
 		Border bordure = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT));
 		this.setBorder(bordure);
 		
-		this.add(phrase, 0, 0);
+		this.add(boxPhrase, 0, 0);
 		this.add(url, 0, 1);
 		this.add(login, 0, 2);
 		this.add(mdp, 0, 3);
-		this.add(connec, 0, 4);
+		this.add(boxConn, 0, 4);
 	}
 
 	/**

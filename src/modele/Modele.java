@@ -110,7 +110,7 @@ public class Modele extends Observable{
 		resultat = new TableView();
 		fenetreActu = new AffichageAppli(width, heigth, this);
 		Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
-		//scene.getStylesheets().add("path/stylesheet.css");
+		scene.getStylesheets().add(getClass().getResource("../css/appli.css").toExternalForm());
 		stage.setScene(scene);
 		
 	}
@@ -123,7 +123,7 @@ public class Modele extends Observable{
 			resultat = new TableView();
 			fenetreActu = new AffichageAdmin(width,heigth,this);
 			Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
-			//scene.getStylesheets().add("path/stylesheet.css");
+			scene.getStylesheets().add(getClass().getResource("../css/admin.css").toExternalForm());
 			stage.setScene(scene);
 		}
 	}

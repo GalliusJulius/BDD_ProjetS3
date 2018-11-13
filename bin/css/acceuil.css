@@ -6,6 +6,16 @@
 }
 
 
+.PLabel{
+	-fx-alignment : center;
+	-fx-padding : 0 0 40 0;
+}
+
+.PButton{
+	-fx-alignment : center;
+	-fx-padding : 30 0 0 0;
+}
+
 .Button{
 	/* -fx-alignment : center; */
 	 -fx-background-color:
