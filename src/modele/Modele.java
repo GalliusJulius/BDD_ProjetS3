@@ -103,6 +103,11 @@ public class Modele extends Observable{
 		}
 	}
 	
+	public void connectionEchouee() {
+		stage.getScene().getStylesheets().clear();
+		stage.getScene().getStylesheets().add(getClass().getResource("../css/echecConnection.css").toExternalForm());
+	}
+	
 	/**
 	 * Méthode permettant l'affichage de la vue AffichageAppli (et ses composants) dans l'application.
 	 */
@@ -112,7 +117,6 @@ public class Modele extends Observable{
 		Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
 		scene.getStylesheets().add(getClass().getResource("../css/appli.css").toExternalForm());
 		stage.setScene(scene);
-		
 	}
 	
 	/**

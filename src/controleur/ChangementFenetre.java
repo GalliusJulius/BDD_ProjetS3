@@ -77,7 +77,9 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 				try {
 					model.seConnecter();
 					model.afficherAppli();
-				} catch (SQLException expt) { expt.printStackTrace(); }
+				} catch (SQLException expt) { 
+					model.connectionEchouee();
+				}
 			}
 			// Affiche le resultat
 			else if(((Button)e.getSource()).getText().equals("Rechercher")) {
