@@ -26,11 +26,14 @@ public class Question6b {
 		System.out.println("Ensuite nous réinsererons toutes les entrées et enfin afficher audit");
 		System.out.println("Tapez sur la touche entrée pour continuer");
 		sc.nextLine();
-		PreparedStatement stt = cnt.prepareStatement("delete from dossier");
+		PreparedStatement stt = cnt.prepareStatement("delete from Audit_");
 		stt.executeUpdate();
 		stt.close();
-		List<List<String>> listeStrings=Arrays.asList(Arrays.asList("1","1-10-2015","5-10-2015","t1","x","duvig001","7418yc54","Nancy","Nancy","Nancy"),Arrays.asList("2","1-10-2015","5-10-2015","t1",null,"dumon001","2569yp54","Nancy","Nancy","Nancy"),Arrays.asList("3","2-10-2015","10-10-2015","t1","x","delar001","1789xv54","Nancy","Nancy","Nancy"));
-		for(int i =0;i<2;i++) {
+		stt = cnt.prepareStatement("delete from dossier");
+		stt.executeUpdate();
+		stt.close();
+		List<List<String>> listeStrings=Arrays.asList(Arrays.asList("1","1-10-2015","5-10-2015","t1","x","duvig001","7418yc54","Nancy","Nancy","Nancy"),Arrays.asList("2","1-10-2015","5-10-2015","t1",null,"dumon001","2569yp54","Nancy","Nancy","Nancy"),Arrays.asList("3","2-10-2015","10-10-2015","t1","x","delar001","1789xv54","Nancy","Nancy","Nancy"),Arrays.asList("4","2-10-2015","5-10-2015","t1",null,"delam001","5213ye54","Nancy","Nancy","Nancy"),Arrays.asList("5","6-10-2015","7-10-2015","t2","x","roule001","7418yc54","Nancy","Nancy","Nancy"),Arrays.asList("6","10-10-2015","15-10-2015","t1",null,"duvig001","6213yd54","Nancy","Strasbourg","Nancy"),Arrays.asList("7","10-10-2015","20-10-2015","t1","x","dumon001","1234ya54","Nancy","Nancy","Nancy"),Arrays.asList("8","13-10-2015","14-10-2015","t3",null,"delar001","7418yc54","Nancy","Nancy","Nancy"),Arrays.asList("9","13-10-2015","14-10-2015","t2",null,"delar001","6213yd54","Nancy","Nancy","Nancy"),Arrays.asList("10","21-10-2015","25-10-2015","t1","x","roule001","1234ya54","Nancy","Nancy","Nancy"));
+		for(int i =0;i<10;i++) {
 			System.out.println(i);
 			stt = cnt.prepareStatement(" insert into dossier values(?,?,?,null,null,null,?,?,null,null,null,?,?,?,?,?)");  
 			for(int x =1;x<=10;x++) {

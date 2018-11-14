@@ -22,7 +22,6 @@ public class Question1{
 	public static void repondreQuestion(Connection cnt, String cat,Date dateD, Date dateF) throws SQLException {
 		PreparedStatement stt = cnt.prepareStatement("SELECT DISTINCT VEHICULE.NO_IMM, VEHICULE.MODELE from VEHICULE"
 				 +" INNER JOIN CATEGORIE ON VEHICULE.CODE_CATEG = CATEGORIE.CODE_CATEG"
-				 +" INNER JOIN CALENDRIER ON VEHICULE.NO_IMM = CALENDRIER.NO_IMM"
 				 +" where LIBELLE like ? and VEHICULE.NO_IMM not in"
 				 +" (select NO_IMM from CALENDRIER"
 				 +" where ? <= DATEJOUR and ? >= DATEJOUR and PASLIBRE is not null)");

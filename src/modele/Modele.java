@@ -103,6 +103,17 @@ public class Modele extends Observable{
 		}
 	}
 	
+	public void connectionEchouee() {
+		stage.getScene().getStylesheets().clear();
+		stage.getScene().getStylesheets().add(getClass().getResource("../css/echecConnection.css").toExternalForm());
+		
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Connection Echouée");
+		alert.setHeaderText(null);
+		alert.setContentText("Connection Impossible !\nVeuillez vérifier vos informations pour continuer.");
+		alert.showAndWait();
+	}
+	
 	/**
 	 * Méthode permettant l'affichage de la vue AffichageAppli (et ses composants) dans l'application.
 	 */
@@ -110,9 +121,8 @@ public class Modele extends Observable{
 		resultat = new TableView();
 		fenetreActu = new AffichageAppli(width, heigth, this);
 		Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
-		//scene.getStylesheets().add("path/stylesheet.css");
+		scene.getStylesheets().add(getClass().getResource("../css/appli.css").toExternalForm());
 		stage.setScene(scene);
-		
 	}
 	
 	/**
@@ -123,7 +133,7 @@ public class Modele extends Observable{
 			resultat = new TableView();
 			fenetreActu = new AffichageAdmin(width,heigth,this);
 			Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
-			//scene.getStylesheets().add("path/stylesheet.css");
+			scene.getStylesheets().add(getClass().getResource("../css/admin.css").toExternalForm());
 			stage.setScene(scene);
 		}
 	}
@@ -134,10 +144,8 @@ public class Modele extends Observable{
 	 * @throws SQLException
 	 */
 	public void rechercher() throws SQLException {
-		
 		PreparedStatement stt = cnt.prepareStatement("SELECT DISTINCT VEHICULE.NO_IMM, VEHICULE.MODELE from VEHICULE"
                             							 +" INNER JOIN CATEGORIE ON VEHICULE.CODE_CATEG = CATEGORIE.CODE_CATEG"
-														 +" INNER JOIN CALENDRIER ON VEHICULE.NO_IMM = CALENDRIER.NO_IMM"
 														 +" where LIBELLE like ? and VEHICULE.NO_IMM not in"
 														 +" (select NO_IMM from CALENDRIER"
 														 +" where ? <= DATEJOUR and ? >= DATEJOUR and PASLIBRE is not null)");

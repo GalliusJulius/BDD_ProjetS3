@@ -36,17 +36,28 @@ public class ModeConsole {
 	 */
 	public void principale() {
 		boolean errone = false;
-		try {
-			//TODO : faire une saisie clavier pour la connec (plus simple pour se connecter pour dev)
-			cnt = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","victor","123");
-		} catch (SQLException e) {
-			System.out.println("Connection échoué!");
-		}
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Bienvenue en mode console!");
 		boolean continuer = true;
+		Scanner sc = new Scanner(System.in);
+		boolean connecte = false;
+		while(!connecte) {
+			try {
+				//TODO : faire une saisie clavier pour la connec (plus simple pour se connecter pour dev)
+				System.out.println("Veuilez rentrer l'url de votre bdd");
+				String url = sc.next();
+				System.out.println("Veuillez rentrer votre login");
+				String login = sc.next();
+				System.out.println("Veuillez rentrer votre mot de passe");
+				String mdp =sc.next();
+				//jdbc:oracle:thin:@localhost:1521:XE
+				cnt = DriverManager.getConnection(url,login,mdp);
+				connecte = true;
+			} catch (SQLException e) {
+				System.out.println("Connection échoué!");
+			}
+		}
+		System.out.println("Bienvenue en mode console!");
 		while(continuer) {
-			System.out.println("Veuillez entrer le numéro correspondant à/aux question(s) que vous souhaitez effectuer 1 => question 1,2 et3 ; 2=> question 4; 3=>question 5; 4=>question 6 ");
+			System.out.println("Veuillez entrer le numéro correspondant à/aux question(s) que vous souhaitez effectuer \n1=>question 1,2 et3 \n2=>question 4 \n3=>question 5 \n4=>question 6 ");
 			String choix = sc.next();
 			switch(choix) {
 			case "1":
