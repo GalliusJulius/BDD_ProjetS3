@@ -10,6 +10,7 @@ import QuestionConsole.Question1;
 import QuestionConsole.Question4;
 import QuestionConsole.Question5;
 import QuestionConsole.Question6a;
+import QuestionConsole.Question6b;
 
 
 /**
@@ -113,6 +114,14 @@ public class ModeConsole {
 				if(trig.equals("1")) {
 					try {
 						Question6a.repondreQuestion(cnt);
+					} catch (SQLException e) {
+						System.out.println("erreur sql :");
+						e.printStackTrace();
+					}
+				}
+				else {
+					try {
+						Question6b.repondreQuestion(cnt);
 					} catch (SQLException e) {
 						System.out.println("erreur sql :");
 						e.printStackTrace();
