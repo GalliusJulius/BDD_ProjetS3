@@ -103,9 +103,6 @@ public class Modele extends Observable{
 	}
 	
 	public void connectionEchouee() {
-		stage.getScene().getStylesheets().clear();
-		stage.getScene().getStylesheets().add(getClass().getResource("../css/echecConnection.css").toExternalForm());
-		
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Connection Echouée");
 		alert.setHeaderText(null);
@@ -118,9 +115,9 @@ public class Modele extends Observable{
 	 */
 	public void afficherAppli() {
 		resultat = new VBox(new TableView<Table>());
-		((TableView<Table>) resultat.getChildren().get(0)).setMinHeight(500);
-		((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
-		resultat.getStyleClass().add("TableView");
+		TableView table = (TableView<Table>) resultat.getChildren().get(0);
+		table.setMinHeight(500);
+		table.setEditable(false);
 		fenetreActu = new AffichageAppli((int)stage.getWidth(), (int)stage.getHeight(), this);
 		Scene scene = stage.getScene();
 		scene.setRoot(fenetreActu);
@@ -136,9 +133,8 @@ public class Modele extends Observable{
 		if(fenetreActu instanceof AffichageAppli) {
 			resultat = new VBox(new TableView<Table>());
 			((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
-			resultat.getStyleClass().add("TableView");
 			fenetreActu = new AffichageAdmin((int)stage.getWidth(), (int)stage.getHeight(),this);
-			//Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
+			
 			Scene scene = stage.getScene();
 			scene.setRoot(fenetreActu);
 			scene.getStylesheets().clear();
@@ -255,9 +251,13 @@ public class Modele extends Observable{
 		ResultSet res = stt.executeQuery();
 		
 		
+		TableView table = (TableView<Table>) resultat.getChildren().get(0);
 		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
 		TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
 		TableColumn<Table, String> t3 = new TableColumn<Table, String>(res.getMetaData().getColumnName(3));
+		t1.prefWidthProperty().bind(table.widthProperty().divide(3));
+		t2.prefWidthProperty().bind(table.widthProperty().divide(4));
+		t3.prefWidthProperty().bind(table.widthProperty().divide(3));
 		t1.setCellValueFactory(new PropertyValueFactory<>("nom"));
 		t2.setCellValueFactory(new PropertyValueFactory<>("ville"));
 		t3.setCellValueFactory(new PropertyValueFactory<>("cp"));
@@ -271,11 +271,11 @@ public class Modele extends Observable{
 		stt.close();
 		res.close();
 		
-		((TableView<Table>) resultat.getChildren().get(0)).getItems().clear();
-		((TableView<Table>) resultat.getChildren().get(0)).getColumns().clear();
+		table.getItems().clear();
+		table.getColumns().clear();
 		
-		((TableView<Table>) resultat.getChildren().get(0)).setItems(data);
-		((TableView<Table>) resultat.getChildren().get(0)).getColumns().setAll(t1, t2, t3);
+		table.setItems(data);
+		table.getColumns().setAll(t1, t2, t3);
 		
 		setChanged();
 		notifyObservers();
@@ -361,11 +361,17 @@ public class Modele extends Observable{
 			
 			ResultSet res = stt.executeQuery();
 			
+			TableView table = (TableView<Table>) resultat.getChildren().get(0);
 			TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
 			TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
 			TableColumn<Table, String> t3 = new TableColumn<Table, String>(res.getMetaData().getColumnName(3));
 			TableColumn<Table, String> t4 = new TableColumn<Table, String>(res.getMetaData().getColumnName(4));
 			TableColumn<Table, String> t5 = new TableColumn<Table, String>(res.getMetaData().getColumnName(5));
+			t1.prefWidthProperty().bind(table.widthProperty().divide(7));
+			t2.prefWidthProperty().bind(table.widthProperty().divide(6));
+			t3.prefWidthProperty().bind(table.widthProperty().divide(4));
+			t4.prefWidthProperty().bind(table.widthProperty().divide(5));
+			t5.prefWidthProperty().bind(table.widthProperty().divide(5));
 			t1.setCellValueFactory(new PropertyValueFactory<>("num_doss"));
 			t2.setCellValueFactory(new PropertyValueFactory<>("date"));
 			t3.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -381,11 +387,11 @@ public class Modele extends Observable{
 			stt.close();
 			res.close();
 			
-			((TableView<Table>) resultat.getChildren().get(0)).getItems().clear();
-			((TableView<Table>) resultat.getChildren().get(0)).getColumns().clear();
+			table.getItems().clear();
+			table.getColumns().clear();
 			
-			((TableView<Table>) resultat.getChildren().get(0)).setItems(data);
-			((TableView<Table>) resultat.getChildren().get(0)).getColumns().setAll(t1, t2, t3, t4, t5);
+			table.setItems(data);
+			table.getColumns().setAll(t1, t2, t3, t4, t5);
 			
 			setChanged();
 			notifyObservers();

@@ -1,43 +1,165 @@
 
-
-.Label{
-	-fx-text-fill: white;
-	-fx-font-size : 25;
-}
-
-
-.PLabel{
+.GridPane{
+	-fx-font-size : 16;
 	-fx-alignment : center;
-	-fx-padding : 0 0 40 0;
+	-fx-grid-lines-visible : false;
+	-fx-vgap : 20;
+	-fx-background-color: #32393f;
 }
+
+.GridPaneTop{
+	-fx-font-size : 16;
+	-fx-alignment : center;
+	-fx-grid-lines-visible : false;
+	-fx-hgap : 440;
+	-fx-background-color: #32393f;
+}
+
+.GridPaneBottom{
+	-fx-hgap : 350;
+	-fx-alignment : center;
+	-fx-font-size : 16;
+}
+
+.GridPaneInter{
+	-fx-hgap : 50;
+}
+
+.PButton{
+	-fx-hgap : 60;
+}
+
+.Label{ /* Car .label comprend aussi le titre des colonnes de la table. */
+	-fx-text-fill: white;
+	-fx-font-size : 20;
+}
+
+.check-box{
+	-fx-text-fill: white;
+}
+
+.check-box .box{
+	-fx-background-color: #41484e;
+}
+
+.check-box .mark{
+	-fx-mark-color: white;
+}
+
+.combo-box-base{
+    -fx-background-color: #41484e;
+}
+
+.combo-box-base > .arrow-button {
+   -fx-background-color: #262d35;
+   -fx-padding: 0 4;
+}
+
+.combo-box-base > .arrow-button > .arrow {
+    -fx-background-color: white;
+    -fx-background-insets: 0 0 0 0;
+    -fx-padding: 2 4;
+    -fx-shape: "M 0 0 H 7 L 3.5 4 z";
+}
+
+.combo-box .cell{
+    -fx-background-color: #41484e;
+	-fx-text-fill: white;
+}
+
+.combo-box-popup > .list-view {
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-color: #262d35;
+    -fx-background-color: #262d35;
+    -fx-background-insets: 0, 1;
+}
+
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
+    -fx-background: #41484e;
+}
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected {
+    -fx-background-color: #262d35;
+}
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:hover,
+.combo-box-popup > .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:filled:selected:hover {
+    -fx-background-color: rgba(235,235,235,0.3);
+}
+/*.combo-box-popup > .list-view > .placeholder > .label {
+    -fx-text-fill: white;
+}*/
+
 
 .PButton{
 	-fx-alignment : center;
 	-fx-padding : 30 0 0 0;
 }
 
-.Button{
-	/* -fx-alignment : center; */
-	 -fx-background-color:
-		linear-gradient(#f0f7fd, #d4dbe1),
-		linear-gradient(#f5fcff 0%, #d7dde4 20%, #d4dbe1 100%),
-		linear-gradient(#e1e7ee 0%, #f2f9fc 50%);
-    -fx-background-radius: 13,12,11;
+.button{
+	-fx-background-color: #41484e;
     -fx-background-insets: 0,1,2;
-    -fx-text-fill: black;
+    -fx-text-fill: white;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
-
-.TextField{
-	/* -fx-vgap : 10; */
+.button:hover{
+	-fx-background-color: rgba(235,235,235,0.3);
 }
 
-.GridPane{
-	-fx-font-size : 20;
-	-fx-alignment : center;
-	-fx-grid-lines-visible : false;
-	-fx-vgap : 15;
-	-fx-background-color: #32393f;
+
+.table-view{
+    -fx-base: #41484e;
+    -fx-control-inner-background: #41484e;
+    -fx-background-color: #41484e;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-padding: 1;
 }
+
+.table-view:focused .table-row-cell:focused {
+    -fx-border-color: derive(-fx-base, 20%);
+    -fx-background-insets: 0 0 0 0;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-row-cell:selected {
+   -fx-background-color: rgba(235,235,235,0.1); 
+}
+
+.table-view .table-column{
+	-fx-alignment: center;
+}
+
+.table-view .scroll-bar:horizontal ,
+.table-view .scroll-bar:vertical{
+    -fx-background-color : #262d35;
+}
+
+.table-view .increment-button, .table-view .decrement-button {
+    -fx-background-color : #41484e;
+}
+
+.table-view .scroll-bar:horizontal .track ,
+.table-view .scroll-bar:vertical .track{
+     -fx-background-color : #262d35;
+}
+
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color : #41484e;
+}
+
+.table-view .scroll-bar .thumb:hover,
+.table-view .scroll-bar .thumb:pressed{
+    -fx-background-color: rgba(235,235,235,0.2);
+}
+ 
+.table-view .increment-button:hover, .table-view .decrement-button:hover {
+    -fx-background-color: rgba(235,235,235,0.2);
+}
+
+
+
+
 
