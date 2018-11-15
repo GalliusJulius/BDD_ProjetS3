@@ -198,6 +198,15 @@ public class Modele extends Observable{
 		notifyObservers();
 	}
 	
+	
+	public void afficherErreurRecherche() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Erreur de recherche !");
+		alert.setHeaderText(null);
+		alert.setContentText("Une erreur est survenue lors de l'exuction de la requête.\nVeuillez vérifier les informations saisie, notamment les dates, et de vérifier votre table !");
+		alert.showAndWait();
+	}
+	
 	/**
 	 * Méthode permettant de rechercher des agences qui possèdes toutes les catégories de véhicules (de la base de données).
 	 * Le résultat est stocké et affcihé dans la table de résultats (TableView).
@@ -351,6 +360,15 @@ public class Modele extends Observable{
 		alert.showAndWait();
 	}
 	
+	
+	public void afficherErreurMAJ() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Erreur de MAJ !");
+		alert.setHeaderText(null);
+		alert.setContentText("Une erreur est survenue lors de la mise à jour.\nVeuillez vérifier les dates que vous avez pu saisir !");
+		alert.showAndWait();
+	}
+	
 	public void afficherTableAudit() throws SQLException {
 		PreparedStatement stt = null;
 		try {
@@ -395,9 +413,15 @@ public class Modele extends Observable{
 			
 			setChanged();
 			notifyObservers();
-			
-			
 		}
+	}
+	
+	public void afficherErreur() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Erreur survenue !");
+		alert.setHeaderText(null);
+		alert.setContentText("Une erreur est survenue lors de l'exuction de la requête.\nVeuillez vérifier votre table !");
+		alert.showAndWait();
 	}
 
 	/**

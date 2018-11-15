@@ -90,12 +90,18 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 					else {
 						model.rechercherAgence();
 					}
-				} catch (SQLException expt) { expt.printStackTrace(); }
+				} catch (SQLException expt) { 
+					model.afficherErreurRecherche();
+				}
 			}
 			else if(((Button)e.getSource()).getText().equals("Réserver")) {
 					try {
 						model.mettreAjour(immat);
-					} catch (SQLException expt) { expt.printStackTrace(); }
+					} catch(SQLException expt) {
+						model.afficherErreurRecherche();
+					} catch (Exception expt) { 
+						model.afficherErreurMAJ();
+					}
 			}
 			
 			else if(((Button)e.getSource()).getText().equals("Retour")) {
@@ -104,12 +110,16 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 			else if(((Button)e.getSource()).getText().equals("Afficher")) {
 				try {
 					model.afficherClient(nbChoixClient);
-				} catch (SQLException expt) { expt.printStackTrace(); }
+				} catch (SQLException expt) { 
+					model.afficherErreur();
+				}
 			}
 			else if(((Button)e.getSource()).getText().equals("Afficher la table Audit")){
 				try {
 					model.afficherTableAudit();
-				} catch (SQLException e1) { e1.printStackTrace(); }
+				} catch (SQLException e1) { 
+					model.afficherErreur();
+				}
 			}
 			else if(((Button)e.getSource()).getText().equals("Mode Admin")){
 				model.modeAdmin();
@@ -120,12 +130,6 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 			model.setCatVehicule((String) ((ComboBox)e.getSource()).getValue());
 			
 		}
-		/*else if(e.getSource() instanceof CheckBox) {
-			if(((CheckBox)e.getSource()).getText().equals("Mode Agence")) {
-				model.setModeAgence(((CheckBox)e.getSource()).isSelected());
-				
-			}
-		}*/
 		else if(e.getSource() instanceof DatePicker) {
 			LocalDate ldate = ((DatePicker)e.getSource()).getValue();
 			Date date = calculerDate(ldate);
