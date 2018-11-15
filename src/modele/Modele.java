@@ -95,13 +95,10 @@ public class Modele extends Observable{
 			String url = ((AffichageConnection)fenetreActu).getUrl();
 			String mdp = ((AffichageConnection)fenetreActu).getMdp();
 			String login = ((AffichageConnection)fenetreActu).getLogin();
-			System.out.println("Tentative de connection sur "+url+" avec l'id :"+login+" et le mdp : "+mdp);
-			
 			//CONNECTION :
 			// URL : jdbc:oracle:thin:@localhost:1521:XE
 			cnt = DriverManager.getConnection(url, login, mdp);
 			// Vérifie que la connection est bien effectuée :
-			System.out.println("Connecté : " + cnt.isValid(100));
 		}
 	}
 	
@@ -124,10 +121,11 @@ public class Modele extends Observable{
 		((TableView<Table>) resultat.getChildren().get(0)).setMinHeight(500);
 		((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
 		resultat.getStyleClass().add("TableView");
-		fenetreActu = new AffichageAppli(width, heigth, this);
-		Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
+		fenetreActu = new AffichageAppli((int)stage.getWidth(), (int)stage.getHeight(), this);
+		Scene scene = stage.getScene();
+		scene.setRoot(fenetreActu);
+		scene.getStylesheets().clear();
 		scene.getStylesheets().add(getClass().getResource("../css/appli.css").toExternalForm());
-		stage.setScene(scene);
 		modeAgence = false;
 	}
 	
@@ -139,10 +137,12 @@ public class Modele extends Observable{
 			resultat = new VBox(new TableView<Table>());
 			((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
 			resultat.getStyleClass().add("TableView");
-			fenetreActu = new AffichageAdmin(width,heigth,this);
-			Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
+			fenetreActu = new AffichageAdmin((int)stage.getWidth(), (int)stage.getHeight(),this);
+			//Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
+			Scene scene = stage.getScene();
+			scene.setRoot(fenetreActu);
+			scene.getStylesheets().clear();
 			scene.getStylesheets().add(getClass().getResource("../css/admin.css").toExternalForm());
-			stage.setScene(scene);
 		}
 	}
 	

@@ -1,21 +1,21 @@
 
 .GridPane{
-	-fx-font-size : 18;
+	-fx-font-size : 16;
 	-fx-alignment : center;
 	-fx-grid-lines-visible : false;
-	-fx-vgap : 40;
+	-fx-vgap : 20;
 	-fx-background-color: #32393f;
 }
 
 .GridPaneChoixSelects{
-	-fx-font-size : 18;
+	-fx-font-size : 16;
 	-fx-alignment : center;
 	-fx-padding : 4 0 0 0;
 	/* -fx-grid-lines-visible : true; */
 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 	/* -fx-control-inner-background: #41484e; */
     /* -fx-background-color: #41484e; */
-	-fx-hgap : 50;
+	-fx-hgap : 25;
 }
 
 .flowpane{
