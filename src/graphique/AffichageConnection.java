@@ -42,19 +42,15 @@ public class AffichageConnection extends GridPane {
 		
 		Label phrase1 = new Label("Bienvenue !");
 		Label phrase2 = new Label("Veuillez vous identifier sur votre base :");
-		phrase1.getStyleClass().add("Label");
-		phrase2.getStyleClass().add("Label");
 		VBox boxPhrase = new VBox(phrase1, phrase2);
 		boxPhrase.getStyleClass().add("PLabel");
 		
 		url = new TextField();
-		url.getStyleClass().add("TextField");
 		url.setPromptText("URL");
 		url.setFocusTraversable(false);
 		
 		
 		login = new TextField();
-		login.getStyleClass().add("TextField");
 		login.setPromptText("Identifiant");
 		login.setFocusTraversable(false);
 		
@@ -66,7 +62,6 @@ public class AffichageConnection extends GridPane {
 		
 		
 		Button connec = new Button("Se connecter");
-		connec.getStyleClass().add("Button");
 		connec.setOnAction(new ChangementFenetre(m));
 		VBox boxConn = new VBox(connec);
 		boxConn.getStyleClass().add("PButton");

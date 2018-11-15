@@ -120,18 +120,17 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 			model.setCatVehicule((String) ((ComboBox)e.getSource()).getValue());
 			
 		}
-		else if(e.getSource() instanceof CheckBox) {
+		/*else if(e.getSource() instanceof CheckBox) {
 			if(((CheckBox)e.getSource()).getText().equals("Mode Agence")) {
 				model.setModeAgence(((CheckBox)e.getSource()).isSelected());
 				
 			}
-		}
+		}*/
 		else if(e.getSource() instanceof DatePicker) {
 			LocalDate ldate = ((DatePicker)e.getSource()).getValue();
 			Date date = calculerDate(ldate);
 			
 			model.setDateD(date);
-			System.out.println(date);
 		}
 	}
 
@@ -149,13 +148,11 @@ public class ChangementFenetre implements EventHandler, ChangeListener {
 				res="-1";
 			}
 			nbChoixClient = Integer.parseInt(res);
-			System.out.println(res);
 		} else if(o2 instanceof LocalDate) {
 			LocalDate ldate = (LocalDate) o2;
 			Date date = calculerDate(ldate);
 			
 			model.setDateF(date);
-			System.out.println(date);
 		}
 		
 	}

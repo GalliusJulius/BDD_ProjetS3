@@ -14,12 +14,12 @@ public class Fenetre extends Application {
 	/**
 	 * Largeur de la fenêtre. 
 	 */
-	public static final int WIDTH = 750;
+	public static final int WIDTH = 1250;
 	
 	/**
 	 * Hauteur de la fenêtre. 
 	 */
-	public static final int HEIGHT = 500;
+	public static final int HEIGHT = 750;
 	
 	/**
 	 * Elément de notre fenêtre sur lequel on y place des scènes.
@@ -41,7 +41,7 @@ public class Fenetre extends Application {
 	 * Constructeur de la fenetre de l'application. 
 	 */
 	public Fenetre() {
-		mod = new Modele(1000,500);
+		mod = new Modele(WIDTH, HEIGHT);
 		Pane pan = mod.getFenetreActu();
 
 		affichage = new Scene(pan, WIDTH, HEIGHT);

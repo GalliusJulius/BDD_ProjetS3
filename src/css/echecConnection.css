@@ -1,6 +1,6 @@
 
 
-.Label{
+.label{
 	-fx-text-fill: white;
 	-fx-font-size : 25;
 }
@@ -16,16 +16,24 @@
 	-fx-padding : 30 0 0 0;
 }
 
-.Button{
+.button{
 	/* -fx-alignment : center; */
-	 -fx-background-color:
+	/* -fx-background-color:
 		linear-gradient(#f0f7fd, #d4dbe1),
 		linear-gradient(#f5fcff 0%, #d7dde4 20%, #d4dbe1 100%),
 		linear-gradient(#e1e7ee 0%, #f2f9fc 50%);
     -fx-background-radius: 13,12,11;
     -fx-background-insets: 0,1,2;
-    -fx-text-fill: red;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/
+	-fx-background-color: #41484e;
+    -fx-background-insets: 0,1,2;
+    -fx-text-fill: white;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.button:hover{
+	-fx-background-color: rgba(235,235,235,0.3);
 }
 
 
@@ -37,7 +45,7 @@
 	-fx-font-size : 20;
 	-fx-alignment : center;
 	-fx-grid-lines-visible : false;
-	-fx-vgap : 15;
+	-fx-vgap : 30;
 	-fx-background-color: #32393f;
 }
 

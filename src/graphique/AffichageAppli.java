@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import modele.Modele;
 
 /**
@@ -18,7 +19,7 @@ public class AffichageAppli extends GridPane implements Observer{
 	/**
 	 * Table de résultat du modèle (TableView) que l'on intègre à l'interface.
 	 */
-	private TableView resultat;
+	private VBox resultat;
 	
 	/**
 	 * Consrtucteur de la vue de l'application.
@@ -30,6 +31,8 @@ public class AffichageAppli extends GridPane implements Observer{
 		super();
 		this.setWidth(width);
 		this.setHeight(height);
+		this.getStyleClass().add("GridPane");
+		
 		ChangementFenetre cont = new ChangementFenetre(m);
 		
 		this.add(new ChoixSelects(cont), 0, 0);
@@ -37,9 +40,11 @@ public class AffichageAppli extends GridPane implements Observer{
 		m.addObserver(this);
 		
 		resultat = m.getResultat();
+		resultat.setFillWidth(true);
 		this.add(resultat, 0, 1);
 		
 		FlowPane pan = new FlowPane();
+		pan.getStyleClass().add("FlowPane");
 		Button admin = new Button("Mode Admin");
 		admin.setOnAction(cont);
 		pan.getChildren().add(admin);

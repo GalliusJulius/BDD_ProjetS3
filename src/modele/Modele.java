@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import graphique.AffichageConnection;
 
@@ -35,7 +36,7 @@ public class Modele extends Observable{
 	/**
 	 * Table des résultats des requêtes (tableView). 
 	 */
-	private TableView<Table> resultat;
+	private VBox resultat;
 	
 	/**
 	 * Elément sur lequel on y place des scènes.
@@ -79,8 +80,9 @@ public class Modele extends Observable{
 	public Modele(int w,int h) {
 		width=w;
 		heigth=h;
-		resultat = new TableView<Table>();
-		resultat.setEditable(false);
+		resultat = new VBox(new TableView<Table>());
+		((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
+		resultat.getStyleClass().add("TableView");
 		fenetreActu = new AffichageConnection(w,h,this);
 	}
 	
@@ -118,11 +120,15 @@ public class Modele extends Observable{
 	 * Méthode permettant l'affichage de la vue AffichageAppli (et ses composants) dans l'application.
 	 */
 	public void afficherAppli() {
-		resultat = new TableView();
+		resultat = new VBox(new TableView<Table>());
+		((TableView<Table>) resultat.getChildren().get(0)).setMinHeight(500);
+		((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
+		resultat.getStyleClass().add("TableView");
 		fenetreActu = new AffichageAppli(width, heigth, this);
 		Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
 		scene.getStylesheets().add(getClass().getResource("../css/appli.css").toExternalForm());
 		stage.setScene(scene);
+		modeAgence = false;
 	}
 	
 	/**
@@ -130,7 +136,9 @@ public class Modele extends Observable{
 	 */
 	public void modeAdmin() {
 		if(fenetreActu instanceof AffichageAppli) {
-			resultat = new TableView();
+			resultat = new VBox(new TableView<Table>());
+			((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
+			resultat.getStyleClass().add("TableView");
 			fenetreActu = new AffichageAdmin(width,heigth,this);
 			Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
 			scene.getStylesheets().add(getClass().getResource("../css/admin.css").toExternalForm());
@@ -161,9 +169,13 @@ public class Modele extends Observable{
 		
 		ResultSet res = stt.executeQuery();
 		
+		TableView table = (TableView<Table>) resultat.getChildren().get(0);
 		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
 		TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
 		TableColumn<Table, String> t3 = new TableColumn<Table, String>("Reserver maintenant");
+		t1.prefWidthProperty().bind(table.widthProperty().divide(4));
+		t2.prefWidthProperty().bind(table.widthProperty().divide(2));
+		t3.prefWidthProperty().bind(table.widthProperty().divide(5));
 		t1.setCellValueFactory(new PropertyValueFactory<>("no_im"));
 		t2.setCellValueFactory(new PropertyValueFactory<>("modele"));
 		t3.setCellValueFactory(new PropertyValueFactory<>("reservation"));
@@ -180,11 +192,11 @@ public class Modele extends Observable{
 		stt.close();
 		res.close();
 		
-		resultat.getItems().clear();
-		resultat.getColumns().clear();
+		table.getItems().clear();
+		table.getColumns().clear();
 		
-		resultat.setItems(data);
-		resultat.getColumns().setAll(t1, t2, t3);
+		table.setItems(data);
+		table.getColumns().setAll(t1, t2, t3);
 		
 		setChanged();
 		notifyObservers();
@@ -202,7 +214,9 @@ public class Modele extends Observable{
 													 +" having count(distinct VEHICULE.CODE_CATEG) = (select count(*) from CATEGORIE)");
 		ResultSet res = stt.executeQuery();
 		
+		TableView table = (TableView<Table>) resultat.getChildren().get(0);
 		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
+		t1.prefWidthProperty().bind(table.widthProperty().divide(5));
 		t1.setCellValueFactory(new PropertyValueFactory<>("code_ag"));
 		
 		ObservableList<Table> data = FXCollections.observableArrayList();
@@ -214,11 +228,11 @@ public class Modele extends Observable{
 		stt.close();
 		res.close();
 		
-		resultat.getItems().clear();
-		resultat.getColumns().clear();
+		table.getItems().clear();
+		table.getColumns().clear();
 		
-		resultat.setItems(data);
-		resultat.getColumns().setAll(t1);
+		table.setItems(data);
+		table.getColumns().setAll(t1);
 		
 		setChanged();
 		notifyObservers();
@@ -257,11 +271,11 @@ public class Modele extends Observable{
 		stt.close();
 		res.close();
 		
-		resultat.getItems().clear();
-		resultat.getColumns().clear();
+		((TableView<Table>) resultat.getChildren().get(0)).getItems().clear();
+		((TableView<Table>) resultat.getChildren().get(0)).getColumns().clear();
 		
-		resultat.setItems(data);
-		resultat.getColumns().setAll(t1, t2, t3);
+		((TableView<Table>) resultat.getChildren().get(0)).setItems(data);
+		((TableView<Table>) resultat.getChildren().get(0)).getColumns().setAll(t1, t2, t3);
 		
 		setChanged();
 		notifyObservers();
@@ -367,11 +381,11 @@ public class Modele extends Observable{
 			stt.close();
 			res.close();
 			
-			resultat.getItems().clear();
-			resultat.getColumns().clear();
+			((TableView<Table>) resultat.getChildren().get(0)).getItems().clear();
+			((TableView<Table>) resultat.getChildren().get(0)).getColumns().clear();
 			
-			resultat.setItems(data);
-			resultat.getColumns().setAll(t1, t2, t3, t4, t5);
+			((TableView<Table>) resultat.getChildren().get(0)).setItems(data);
+			((TableView<Table>) resultat.getChildren().get(0)).getColumns().setAll(t1, t2, t3, t4, t5);
 			
 			setChanged();
 			notifyObservers();
@@ -441,7 +455,7 @@ public class Modele extends Observable{
 	 * Getter de la table de résultats (TableView).
 	 * @return table de résultats
 	 */
-	public TableView getResultat() {
+	public VBox getResultat() {
 		return resultat;
 	}
 

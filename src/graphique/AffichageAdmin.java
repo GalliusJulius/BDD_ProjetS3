@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import modele.Modele;
 
 /**
@@ -26,7 +27,7 @@ public class AffichageAdmin extends GridPane implements Observer{
 	/**
 	 * Table de résultat du modèle (TableView) que l'on intègre à l'interface.
 	 */
-	private TableView resultat;
+	private VBox resultat;
 	
 	/**
 	 * Constructeur de la vue administrateur.
@@ -39,18 +40,24 @@ public class AffichageAdmin extends GridPane implements Observer{
 		model = m;
 		this.setWidth(w);
 		this.setHeight(h);
+		this.getStyleClass().add("GridPane");
 		
 		//TOP
 		ChangementFenetre control = new ChangementFenetre(model);
 		
 		ObservableList<String> tab = FXCollections.observableArrayList("Tous","0","1","2","3");
-		Label lab= new Label("Nbr. de modèles différents loués");
+		Label lab = new Label("Nbr. de modèles différents loués");
+		lab.getStyleClass().add("Label");
 		
 		GridPane top = new GridPane();
+		top.getStyleClass().add("GridPane");
+		
 		ComboBox<String> nbChoix = new ComboBox<String>(tab);
+		nbChoix.getStyleClass().add("ComboBox");
 		nbChoix.getSelectionModel().selectFirst();
 		nbChoix.valueProperty().addListener(control); // Changed
 		Button bAff = new Button("Afficher") ;
+		bAff.getStyleClass().add("Button");
 		bAff.setOnAction(control);
 		top.add(lab, 0, 0);
 		top.add(nbChoix, 1, 0);

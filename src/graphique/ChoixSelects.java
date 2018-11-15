@@ -37,6 +37,8 @@ public class ChoixSelects extends GridPane {
 	 */
 	public ChoixSelects(ChangementFenetre cont) {
 		super();
+		this.getStyleClass().add("GridPaneChoixSelects");
+		
 		ObservableList<String> tabCat = FXCollections.observableArrayList("Toutes catégories","Citadine","Compacte","Familiale");
 		
 		//Question 4
@@ -45,15 +47,15 @@ public class ChoixSelects extends GridPane {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
 				if(c1.isSelected()) {
-					c2.setEditable(false);
-					c4.setEditable(false);
-					c5.setEditable(false);
+					c2.setDisable(true);
+					c4.setDisable(true);
+					c5.setDisable(true);
 					cont.setModeAgence(true);
 				}
 				else {
-					c2.setEditable(true);
-					c4.setEditable(true);
-					c5.setEditable(true);
+					c2.setDisable(false);
+					c4.setDisable(false);
+					c5.setDisable(false);
 					cont.setModeAgence(false);
 				}
 			}
@@ -67,9 +69,11 @@ public class ChoixSelects extends GridPane {
 		
 		// Date de début
 		c4 = new DatePicker();
+		c4.setPromptText("Date de début");
 		c4.setOnAction(cont);
 		// Date de fin
 		c5 = new DatePicker();
+		c5.setPromptText("Date de fin");
 		c5.valueProperty().addListener(cont);
 		
 		//lancer la recherhe
@@ -77,8 +81,7 @@ public class ChoixSelects extends GridPane {
 		c6.setOnAction(cont);
 		
 		this.add(c1, 0, 0);
-		this.add(c2, 1, 0);
-		//GridPane.setHalignment(loginButton, HPos.RIGHT); 
+		this.add(c2, 1, 0); 
 		this.add(c4, 2, 0);
 		this.add(c5, 3, 0);
 		this.add(c6, 4, 0);
