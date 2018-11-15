@@ -18,7 +18,9 @@ import modele.Modele;
  * Controleur de toutes les vues, gère tous les événements de tous les composants présents dans l'application.
  * L'interface ChangeListener nous sert de controleur pour le DatePicker de Fin (de AffichageAppli) et le ComboBox (du mode Admin).
  * Et l'interface EventHandler sert pour tout les autres événements.
- * Il n'a que très peu de différences entre les deux interfaces, on utilise ces 2 interafces pour distinguer les 2 Combobox et les 2 DatePicker de notre application. 
+ * Il n'a que très peu de différences entre les deux interfaces, on utilise ces 2 interafces pour distinguer les 2 Combobox et les 2 DatePicker de notre application.
+ * 
+ * @author victo & rem
  */
 public class ChangementFenetre implements EventHandler, ChangeListener {
 

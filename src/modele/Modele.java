@@ -24,7 +24,9 @@ import graphique.AffichageConnection;
 /**
  * Modèle de l'application.
  * Ici, le modèle gère la connection à la base de données ainsi que les requêtes vers celle-ci.
- * Il gère également le changement des différents affichages (AffchageAppli, AffichageConnection et AffichageAdmin). 
+ * Il gère également le changement des différents affichages (AffchageAppli, AffichageConnection et AffichageAdmin).
+ * 
+ * @author victo & rem
  */
 public class Modele extends Observable{
 	
@@ -34,7 +36,7 @@ public class Modele extends Observable{
 	private Pane fenetreActu;
 	
 	/**
-	 * Table des résultats des requêtes (tableView). 
+	 * Table des résultats des requêtes (VBox dans lequel se trouve une tableView). 
 	 */
 	private VBox resultat;
 	
@@ -102,6 +104,9 @@ public class Modele extends Observable{
 		}
 	}
 	
+	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas la connexion à la base de données (dans la vue AffichageConnection).
+	 */
 	public void connectionEchouee() {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Connection Echouée");
@@ -198,7 +203,10 @@ public class Modele extends Observable{
 		notifyObservers();
 	}
 	
-	
+	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas des informations à saisir dans la vue AffichageAppli.
+	 * Ces erreurs peuvent également venir de la strcture de la table ou des informations contenu dans celle-ci.
+	 */
 	public void afficherErreurRecherche() {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Erreur de recherche !");
@@ -360,7 +368,9 @@ public class Modele extends Observable{
 		alert.showAndWait();
 	}
 	
-	
+	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas de la mise à jour de la table, plus précisémment lorsque la date n'est pas saisie (NullPointerException).
+	 */
 	public void afficherErreurMAJ() {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Erreur de MAJ !");
@@ -416,6 +426,9 @@ public class Modele extends Observable{
 		}
 	}
 	
+	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas de m'excution des requêtes dans le mode admin (vue AffichageAdmin), c'est erreurs sont très souvent liées à la struccture aux informations de la table. 
+	 */
 	public void afficherErreur() {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Erreur survenue !");

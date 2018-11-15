@@ -12,6 +12,8 @@ import modele.Modele;
  * Fenêtre principale (ou on peut parler d'application) sur laquelle est chargée
  * les différentes scènes (ou affichages) au cours de l'execution de
  * l'application.
+ * 
+ * @author victo & rem
  */
 public class Fenetre extends Application {
 

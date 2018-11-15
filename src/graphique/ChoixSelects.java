@@ -13,6 +13,8 @@ import javafx.scene.layout.GridPane;
 
 /**
  * Vue des choix séléctionnés dans la vue de l'application (GridPane).
+ * 
+ * @author victo & rem
  */
 public class ChoixSelects extends GridPane {
 	

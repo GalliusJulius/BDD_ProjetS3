@@ -6,6 +6,8 @@ import javafx.application.Application;
 
 /**
  * Classe principale de l'application.
+ * 
+ * @author victo & rem
  */
 public class Principale {
 	
