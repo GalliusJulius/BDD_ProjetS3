@@ -13,7 +13,7 @@ import modele.Modele;
  * les différentes scènes (ou affichages) au cours de l'execution de
  * l'application.
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class Fenetre extends Application {
 

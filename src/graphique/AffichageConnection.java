@@ -20,7 +20,7 @@ import modele.Modele;
 /**
  * Vue de la page d'acceuil [connection à la base de données] (Gridpane).
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class AffichageConnection extends GridPane {
 	

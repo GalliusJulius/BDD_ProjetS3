@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Classe permettant de repondre a la question 5
- * @author victo & rem
+ * @author victo et rem
  *
  */
 public class Question5 {

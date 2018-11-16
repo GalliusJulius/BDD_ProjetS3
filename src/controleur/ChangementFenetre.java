@@ -20,7 +20,7 @@ import modele.Modele;
  * Et l'interface EventHandler sert pour tout les autres événements.
  * Il n'a que très peu de différences entre les deux interfaces, on utilise ces 2 interafces pour distinguer les 2 Combobox et les 2 DatePicker de notre application.
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class ChangementFenetre implements EventHandler, ChangeListener {
 

@@ -26,7 +26,7 @@ import graphique.AffichageConnection;
  * Ici, le modèle gère la connection à la base de données ainsi que les requêtes vers celle-ci.
  * Il gère également le changement des différents affichages (AffchageAppli, AffichageConnection et AffichageAdmin).
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class Modele extends Observable{
 	

@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
  * Cette classe sert uniquement à ce que l'on puisse afficher les données résultantes (d'une requête) dans la table (TableView) du modèle.
  * Chaque constructeur correspond à un résultat d'une requête se trouvant dans le modèle.
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class Contenu implements Table{
 	/**

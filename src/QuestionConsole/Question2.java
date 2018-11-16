@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 /**
  * Classe repondant à la question 2
- * @author victo & rem
+ * @author victo et rem
  *
  */
 public class Question2 {

@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  * Classe peremttant de tester le 1er triger
- * @author victo
+ * @author victo et rem
  *
  */
 public class Question6a {

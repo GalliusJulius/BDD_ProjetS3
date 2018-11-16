@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 /**
  * Classe peremettant de vérifier le trigger de la question 6b
- * @author victo & rem
+ * @author victo et rem
  *
  */
 public class Question6b {

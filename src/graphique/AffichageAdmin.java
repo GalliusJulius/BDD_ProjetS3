@@ -18,7 +18,7 @@ import modele.Modele;
 /**
  * Vue du mode administrateur (Gridpane).
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class AffichageAdmin extends GridPane implements Observer{
 	/**

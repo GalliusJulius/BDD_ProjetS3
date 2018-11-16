@@ -15,7 +15,7 @@ import QuestionConsole.Question6b;
 
 /**
  * Permet de creer le mode console et de l'utiliser
- * @author victo & rem
+ * @author victo et rem
  *
  */
 public class ModeConsole {

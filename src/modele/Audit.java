@@ -6,7 +6,7 @@ import java.sql.Date;
  * Classe représentant les différentes données qui se trouvent dans la table Audit.
  * Cette classe sert uniquement à ce que l'on puisse afficher les données résultantes (d'une requête) dans la table (TableView) du modèle.
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class Audit implements Table {
 	

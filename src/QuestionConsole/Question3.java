@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 /**
  * Classe permettant de répondre à la question 3
- * @author victo & rem
+ * @author victo et rem
  *
  */
 public class Question3 {

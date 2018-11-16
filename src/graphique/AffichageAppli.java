@@ -14,7 +14,7 @@ import modele.Modele;
 /**
  * Vue de l'application [après la page d'acceuil] (Gridpane).
  * 
- * @author victo & rem
+ * @author victo et rem
  */
 public class AffichageAppli extends GridPane implements Observer{
 	

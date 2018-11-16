@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Classe permettant de repondre a la premiere question
- * @author victo & rem
+ * @author victo et rem
  *
  */
 public class Question1{
