@@ -36,7 +36,7 @@ public class Question3 {
 		if(res.next()) {
 			prixJour = res.getDouble(1);
 			prixHebdo = res.getDouble(2);
-			nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24)); 
+			nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24))+1; 
 			prix = (nbJour%7*prixJour + ((int)(nbJour/7))*prixHebdo);
 			stt.close();
 			System.out.println("Votre réservation de "+nbJour+" jour(s) à compter du "+dateD+ "au "+dateF +" coutera "+prix);

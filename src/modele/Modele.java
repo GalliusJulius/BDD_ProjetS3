@@ -153,54 +153,69 @@ public class Modele extends Observable{
 	 * @throws SQLException
 	 */
 	public void rechercher() throws SQLException {
-		PreparedStatement stt = cnt.prepareStatement("SELECT DISTINCT VEHICULE.NO_IMM, VEHICULE.MODELE from VEHICULE"
-                            							 +" INNER JOIN CATEGORIE ON VEHICULE.CODE_CATEG = CATEGORIE.CODE_CATEG"
-														 +" where LIBELLE like ? and VEHICULE.NO_IMM not in"
-														 +" (select NO_IMM from CALENDRIER"
-														 +" where ? <= DATEJOUR and ? >= DATEJOUR and PASLIBRE is not null)");
-		if(catVehicule.equals("Toutes catégories")){
-			stt.setString(1, "%");
+		if(dateD != null && dateF != null && !dateF.before(dateD)) {
+			PreparedStatement stt = cnt.prepareStatement("SELECT DISTINCT VEHICULE.NO_IMM, VEHICULE.MODELE from VEHICULE"
+	                            							 +" INNER JOIN CATEGORIE ON VEHICULE.CODE_CATEG = CATEGORIE.CODE_CATEG"
+															 +" where LIBELLE like ? and VEHICULE.NO_IMM not in"
+															 +" (select NO_IMM from CALENDRIER"
+															 +" where ? <= DATEJOUR and ? >= DATEJOUR and PASLIBRE is not null)");
+			if(catVehicule.equals("Toutes catégories")){
+				stt.setString(1, "%");
+			}
+			else {
+				stt.setString(1, catVehicule.toLowerCase());
+			}
+			
+			stt.setDate(2, dateD);
+			stt.setDate(3, dateF);
+			
+			ResultSet res = stt.executeQuery();
+			
+			TableView table = (TableView<Table>) resultat.getChildren().get(0);
+			TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
+			TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
+			TableColumn<Table, String> t3 = new TableColumn<Table, String>("Reserver maintenant");
+			t1.prefWidthProperty().bind(table.widthProperty().divide(4));
+			t2.prefWidthProperty().bind(table.widthProperty().divide(2));
+			t3.prefWidthProperty().bind(table.widthProperty().divide(5));
+			t1.setCellValueFactory(new PropertyValueFactory<>("no_im"));
+			t2.setCellValueFactory(new PropertyValueFactory<>("modele"));
+			t3.setCellValueFactory(new PropertyValueFactory<>("reservation"));
+			
+			ObservableList<Table> data = FXCollections.observableArrayList();
+			
+			while(res.next()) {
+				Button b = new Button("Réserver");
+				b.setOnAction(new ChangementFenetre(this, res.getString(1)));
+				
+				data.add(new Contenu(res.getString(1), res.getString(2), b));
+			}
+			
+			stt.close();
+			res.close();
+			
+			table.getItems().clear();
+			table.getColumns().clear();
+			
+			table.setItems(data);
+			table.getColumns().setAll(t1, t2, t3);
+			
+			setChanged();
+			notifyObservers();
 		}
 		else {
-			stt.setString(1, catVehicule.toLowerCase());
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setHeaderText(null);
+			if(dateD==null || dateF==null) {
+				alert.setTitle("Pas de dates");
+				alert.setContentText("Entrez une date!");
+			}
+			else {
+				alert.setTitle("Date invalide");
+				alert.setContentText("Date de début après date de fin!");
+			}
+			alert.showAndWait();
 		}
-		
-		stt.setDate(2, dateD);
-		stt.setDate(3, dateF);
-		
-		ResultSet res = stt.executeQuery();
-		
-		TableView table = (TableView<Table>) resultat.getChildren().get(0);
-		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
-		TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
-		TableColumn<Table, String> t3 = new TableColumn<Table, String>("Reserver maintenant");
-		t1.prefWidthProperty().bind(table.widthProperty().divide(4));
-		t2.prefWidthProperty().bind(table.widthProperty().divide(2));
-		t3.prefWidthProperty().bind(table.widthProperty().divide(5));
-		t1.setCellValueFactory(new PropertyValueFactory<>("no_im"));
-		t2.setCellValueFactory(new PropertyValueFactory<>("modele"));
-		t3.setCellValueFactory(new PropertyValueFactory<>("reservation"));
-		
-		ObservableList<Table> data = FXCollections.observableArrayList();
-		
-		while(res.next()) {
-			Button b = new Button("Réserver");
-			b.setOnAction(new ChangementFenetre(this, res.getString(1)));
-			
-			data.add(new Contenu(res.getString(1), res.getString(2), b));
-		}
-		
-		stt.close();
-		res.close();
-		
-		table.getItems().clear();
-		table.getColumns().clear();
-		
-		table.setItems(data);
-		table.getColumns().setAll(t1, t2, t3);
-		
-		setChanged();
-		notifyObservers();
 	}
 	
 	/**

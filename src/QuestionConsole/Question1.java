@@ -35,9 +35,10 @@ public class Question1{
 		while(res.next()) {
 			listeImmat.add(res.getString(1));
 			System.out.println(i+" ) "+res.getString(1)+" , "+res.getString(2));
+			i++;
 		}
 		if(i==1) {
-			System.out.println("Aucune réponse ne correspond à votre recherche, vérifiez si votre catégorie de véhicule éxiste ou alors aucun véhicule n'est disponible aux notes que vous avez rentré!");
+			System.out.println("Aucune réponse ne correspond à votre recherche, vérifiez si votre catégorie de véhicule éxiste ou alors aucun véhicule n'est disponible aux dates que vous avez rentré!");
 		}
 		stt.close();
 		res.close();
