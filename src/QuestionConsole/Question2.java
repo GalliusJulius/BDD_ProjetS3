@@ -28,8 +28,8 @@ public class Question2 {
 		System.out.println("Veuillez entrer le numéro d'immatriculation parmi les véhicules proposés pour le réserver aux dates que vous avez rentré sinon tapez -1");
 		Scanner sc = new Scanner(System.in);
 		String immat = sc.next();
-		while(!listeImmat.contains(immat)) {
-			System.out.println("Immat introuvable entrez une valeure valable ou entrez -1 pour sortir");
+		while(!listeImmat.contains(immat) || !immat.equals("-1")) {
+			System.out.println("Immat introuvable entrez une valeur valable ou entrez -1 pour sortir");
 			immat = sc.next();
 		}
 		//si l'user veut reserver

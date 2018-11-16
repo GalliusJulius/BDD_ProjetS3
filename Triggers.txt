@@ -1,0 +1,38 @@
+*****Question 6.1
+
+create or replace trigger majKilometre after
+  update of kil_retour on DOSSIER
+  referencing new as ligne
+  for each row
+  declare
+    nbkim number(10);
+  begin
+      select KILOMETRES into nbkim from VEHICULE where VEHICULE.NO_IMM = :ligne.NO_IMM;
+    update VEHICULE set VEHICULE.KILOMETRES = nbkim+nvl(:ligne.KIL_RETOUR,0)-nvl(:ligne.KIL_RETRAIT,0)
+      where NO_IMM = :ligne.NO_IMM;
+  end;
+
+*****Question 6.2
+
+create or replace trigger majAudit after
+  insert on DOSSIER
+  referencing new as ligneAdd
+  for each row
+  declare
+    nomCli varchar2(20);
+    marq varchar2(10);
+    model varchar2(10);
+  begin
+
+    if(:ligneAdd.DATE_RETOUR-:ligneAdd.DATE_RETRAIT >= 7)then
+
+      select MARQUE, modele into marq, model
+        from VEHICULE where :ligneAdd.NO_IMM = NO_IMM;
+
+      select NOM into nomCli
+        from CLIENT where :ligneAdd.CODE_CLI = CLIENT.CODE_CLI;
+
+      insert into Audit_ values (:ligneAdd.NO_DOSSIER, sysdate, nomCli, marq, model);
+
+    end if;
+  end;

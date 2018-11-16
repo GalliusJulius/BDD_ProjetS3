@@ -41,7 +41,6 @@ public class ModeConsole {
 		boolean connecte = false;
 		while(!connecte) {
 			try {
-				//TODO : faire une saisie clavier pour la connec (plus simple pour se connecter pour dev)
 				System.out.println("Veuilez rentrer l'url de votre bdd");
 				String url = sc.next();
 				System.out.println("Veuillez rentrer votre login");
