@@ -301,7 +301,7 @@ public class Modele extends Observable{
 	/**
 	 * Métode permettant de mettre à jour (ou d'insérer) la réservation d'un véhicule à une période choisie.
 	 * Cette méthode met également l'affichage de la table résultat à jour.
-	 * @param immat
+	 * @param immat immatriculation du véhicule à louer
 	 * @throws SQLException
 	 */
 	public void mettreAjour(String immat) throws SQLException {
@@ -379,6 +379,10 @@ public class Modele extends Observable{
 		alert.showAndWait();
 	}
 	
+	/**
+	 * Méthode permettant l'affichage de la table Audit_ mise à jour par les triggers.
+	 * @throws SQLException
+	 */
 	public void afficherTableAudit() throws SQLException {
 		PreparedStatement stt = null;
 		try {
