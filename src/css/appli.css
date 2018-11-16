@@ -11,31 +11,20 @@
 	-fx-font-size : 16;
 	-fx-alignment : center;
 	-fx-padding : 4 0 0 0;
-	/* -fx-grid-lines-visible : true; */
 	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-	/* -fx-control-inner-background: #41484e; */
-    /* -fx-background-color: #41484e; */
 	-fx-hgap : 25;
-}
-
-.flowpane{
-	-fx-padding : 0 0 4 0;
 }
 
 .check-box{
 	-fx-text-fill: white;
-	/* -fx-background-color: #41484e; */
-	/* -fx-font-size : 25; */
 }
 
 .check-box .box{
 	-fx-background-color: #41484e;
-	/* -fx-font-size : 25; */
 }
 
 .check-box .mark{
 	-fx-mark-color: white;
-	/* -fx-font-size : 25; */
 }
 
 .combo-box-base{
@@ -88,12 +77,6 @@
 }
 
 .button{
-	/* -fx-alignment : center; */
-	 /* -fx-background-color: */
-		/* linear-gradient(#f0f7fd, #d4dbe1), */
-		/* linear-gradient(#f5fcff 0%, #d7dde4 20%, #d4dbe1 100%), */
-		/* linear-gradient(#e1e7ee 0%, #f2f9fc 50%); */
-    /* -fx-background-radius: 13,12,11; */
 	-fx-background-color: #41484e;
     -fx-background-insets: 0,1,2;
     -fx-text-fill: white;

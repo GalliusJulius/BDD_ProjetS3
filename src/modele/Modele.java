@@ -24,7 +24,9 @@ import graphique.AffichageConnection;
 /**
  * Modèle de l'application.
  * Ici, le modèle gère la connection à la base de données ainsi que les requêtes vers celle-ci.
- * Il gère également le changement des différents affichages (AffchageAppli, AffichageConnection et AffichageAdmin). 
+ * Il gère également le changement des différents affichages (AffchageAppli, AffichageConnection et AffichageAdmin).
+ * 
+ * @author victo & rem
  */
 public class Modele extends Observable{
 	
@@ -34,7 +36,7 @@ public class Modele extends Observable{
 	private Pane fenetreActu;
 	
 	/**
-	 * Table des résultats des requêtes (tableView). 
+	 * Table des résultats des requêtes (VBox dans lequel se trouve une tableView). 
 	 */
 	private VBox resultat;
 	
@@ -102,10 +104,10 @@ public class Modele extends Observable{
 		}
 	}
 	
+	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas la connexion à la base de données (dans la vue AffichageConnection).
+	 */
 	public void connectionEchouee() {
-		stage.getScene().getStylesheets().clear();
-		stage.getScene().getStylesheets().add(getClass().getResource("../css/echecConnection.css").toExternalForm());
-		
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Connection Echouée");
 		alert.setHeaderText(null);
@@ -118,9 +120,9 @@ public class Modele extends Observable{
 	 */
 	public void afficherAppli() {
 		resultat = new VBox(new TableView<Table>());
-		((TableView<Table>) resultat.getChildren().get(0)).setMinHeight(500);
-		((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
-		resultat.getStyleClass().add("TableView");
+		TableView table = (TableView<Table>) resultat.getChildren().get(0);
+		table.setMinHeight(500);
+		table.setEditable(false);
 		fenetreActu = new AffichageAppli((int)stage.getWidth(), (int)stage.getHeight(), this);
 		Scene scene = stage.getScene();
 		scene.setRoot(fenetreActu);
@@ -136,9 +138,8 @@ public class Modele extends Observable{
 		if(fenetreActu instanceof AffichageAppli) {
 			resultat = new VBox(new TableView<Table>());
 			((TableView<Table>) resultat.getChildren().get(0)).setEditable(false);
-			resultat.getStyleClass().add("TableView");
 			fenetreActu = new AffichageAdmin((int)stage.getWidth(), (int)stage.getHeight(),this);
-			//Scene scene = new Scene(fenetreActu, Fenetre.WIDTH, Fenetre.HEIGHT);
+			
 			Scene scene = stage.getScene();
 			scene.setRoot(fenetreActu);
 			scene.getStylesheets().clear();
@@ -203,6 +204,18 @@ public class Modele extends Observable{
 	}
 	
 	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas des informations à saisir dans la vue AffichageAppli.
+	 * Ces erreurs peuvent également venir de la strcture de la table ou des informations contenu dans celle-ci.
+	 */
+	public void afficherErreurRecherche() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Erreur de recherche !");
+		alert.setHeaderText(null);
+		alert.setContentText("Une erreur est survenue lors de l'exuction de la requête.\nVeuillez vérifier les informations saisie, notamment les dates, et de vérifier votre table !");
+		alert.showAndWait();
+	}
+	
+	/**
 	 * Méthode permettant de rechercher des agences qui possèdes toutes les catégories de véhicules (de la base de données).
 	 * Le résultat est stocké et affcihé dans la table de résultats (TableView).
 	 * @throws SQLException
@@ -255,9 +268,13 @@ public class Modele extends Observable{
 		ResultSet res = stt.executeQuery();
 		
 		
+		TableView table = (TableView<Table>) resultat.getChildren().get(0);
 		TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
 		TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
 		TableColumn<Table, String> t3 = new TableColumn<Table, String>(res.getMetaData().getColumnName(3));
+		t1.prefWidthProperty().bind(table.widthProperty().divide(3));
+		t2.prefWidthProperty().bind(table.widthProperty().divide(4));
+		t3.prefWidthProperty().bind(table.widthProperty().divide(3));
 		t1.setCellValueFactory(new PropertyValueFactory<>("nom"));
 		t2.setCellValueFactory(new PropertyValueFactory<>("ville"));
 		t3.setCellValueFactory(new PropertyValueFactory<>("cp"));
@@ -271,11 +288,11 @@ public class Modele extends Observable{
 		stt.close();
 		res.close();
 		
-		((TableView<Table>) resultat.getChildren().get(0)).getItems().clear();
-		((TableView<Table>) resultat.getChildren().get(0)).getColumns().clear();
+		table.getItems().clear();
+		table.getColumns().clear();
 		
-		((TableView<Table>) resultat.getChildren().get(0)).setItems(data);
-		((TableView<Table>) resultat.getChildren().get(0)).getColumns().setAll(t1, t2, t3);
+		table.setItems(data);
+		table.getColumns().setAll(t1, t2, t3);
 		
 		setChanged();
 		notifyObservers();
@@ -284,7 +301,7 @@ public class Modele extends Observable{
 	/**
 	 * Métode permettant de mettre à jour (ou d'insérer) la réservation d'un véhicule à une période choisie.
 	 * Cette méthode met également l'affichage de la table résultat à jour.
-	 * @param immat
+	 * @param immat immatriculation du véhicule à louer
 	 * @throws SQLException
 	 */
 	public void mettreAjour(String immat) throws SQLException {
@@ -336,7 +353,7 @@ public class Modele extends Observable{
 				prixJour = res.getDouble(1);
 				prixHebdo = res.getDouble(2);
 			}
-			nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24)); 
+			nbJour =(int)((dateF.getTime() - dateD.getTime() )/(1000*60*60*24)) + 1; 
 			prix = (nbJour%7*prixJour + ((int)(nbJour/7))*prixHebdo);
 			stt2.close();
 			
@@ -351,6 +368,21 @@ public class Modele extends Observable{
 		alert.showAndWait();
 	}
 	
+	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas de la mise à jour de la table, plus précisémment lorsque la date n'est pas saisie (NullPointerException).
+	 */
+	public void afficherErreurMAJ() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Erreur de MAJ !");
+		alert.setHeaderText(null);
+		alert.setContentText("Une erreur est survenue lors de la mise à jour.\nVeuillez vérifier les dates que vous avez pu saisir !");
+		alert.showAndWait();
+	}
+	
+	/**
+	 * Méthode permettant l'affichage de la table Audit_ mise à jour par les triggers.
+	 * @throws SQLException
+	 */
 	public void afficherTableAudit() throws SQLException {
 		PreparedStatement stt = null;
 		try {
@@ -361,11 +393,17 @@ public class Modele extends Observable{
 			
 			ResultSet res = stt.executeQuery();
 			
+			TableView table = (TableView<Table>) resultat.getChildren().get(0);
 			TableColumn<Table, String> t1 = new TableColumn<Table, String>(res.getMetaData().getColumnName(1));
 			TableColumn<Table, String> t2 = new TableColumn<Table, String>(res.getMetaData().getColumnName(2));
 			TableColumn<Table, String> t3 = new TableColumn<Table, String>(res.getMetaData().getColumnName(3));
 			TableColumn<Table, String> t4 = new TableColumn<Table, String>(res.getMetaData().getColumnName(4));
 			TableColumn<Table, String> t5 = new TableColumn<Table, String>(res.getMetaData().getColumnName(5));
+			t1.prefWidthProperty().bind(table.widthProperty().divide(7));
+			t2.prefWidthProperty().bind(table.widthProperty().divide(6));
+			t3.prefWidthProperty().bind(table.widthProperty().divide(4));
+			t4.prefWidthProperty().bind(table.widthProperty().divide(5));
+			t5.prefWidthProperty().bind(table.widthProperty().divide(5));
 			t1.setCellValueFactory(new PropertyValueFactory<>("num_doss"));
 			t2.setCellValueFactory(new PropertyValueFactory<>("date"));
 			t3.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -381,17 +419,26 @@ public class Modele extends Observable{
 			stt.close();
 			res.close();
 			
-			((TableView<Table>) resultat.getChildren().get(0)).getItems().clear();
-			((TableView<Table>) resultat.getChildren().get(0)).getColumns().clear();
+			table.getItems().clear();
+			table.getColumns().clear();
 			
-			((TableView<Table>) resultat.getChildren().get(0)).setItems(data);
-			((TableView<Table>) resultat.getChildren().get(0)).getColumns().setAll(t1, t2, t3, t4, t5);
+			table.setItems(data);
+			table.getColumns().setAll(t1, t2, t3, t4, t5);
 			
 			setChanged();
 			notifyObservers();
-			
-			
 		}
+	}
+	
+	/**
+	 * Affichage d'une boite de dialogue indiquant une erreur dans le cas de m'excution des requêtes dans le mode admin (vue AffichageAdmin), c'est erreurs sont très souvent liées à la struccture aux informations de la table. 
+	 */
+	public void afficherErreur() {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Erreur survenue !");
+		alert.setHeaderText(null);
+		alert.setContentText("Une erreur est survenue lors de l'exuction de la requête.\nVeuillez vérifier votre table !");
+		alert.showAndWait();
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class ModeConsole {
 					String dateDt = sc.next();
 					System.out.println("Veuillez entrer la date de fin dans le format : jour-mois-année (avec les tirets et tout en chiffre)");
 					String dateFt = sc.next();
-					System.out.println("Veuillez entrer la catégorie du véhicule voulue");
+					System.out.println("Veuillez entrer la catégorie du véhicule voulue (citadine,compacte ou familiale)");
 					cat = sc.next();
 					//conversion des phrase en date
 					try{

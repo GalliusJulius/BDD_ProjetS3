@@ -12,6 +12,8 @@ import modele.Modele;
  * Fenêtre principale (ou on peut parler d'application) sur laquelle est chargée
  * les différentes scènes (ou affichages) au cours de l'execution de
  * l'application.
+ * 
+ * @author victo & rem
  */
 public class Fenetre extends Application {
 
@@ -61,11 +63,8 @@ public class Fenetre extends Application {
 		mod.setStage(st);
 		stage.setMaximized(true);
 		stage.setTitle("Projet BDD");
-		stage.setResizable(true);
 		affichage.getStylesheets().add(getClass().getResource("../css/acceuil.css").toExternalForm());
 		stage.setScene(affichage);
-		stage.toFront();
-		stage.requestFocus();
 		stage.show();
 	}
 }

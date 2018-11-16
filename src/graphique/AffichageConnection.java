@@ -19,6 +19,8 @@ import modele.Modele;
 
 /**
  * Vue de la page d'acceuil [connection à la base de données] (Gridpane).
+ * 
+ * @author victo & rem
  */
 public class AffichageConnection extends GridPane {
 	
@@ -27,6 +29,10 @@ public class AffichageConnection extends GridPane {
 	 * Comprenant : l'url, le login et le mot de passe de la base de données (BDD). 
 	 */
 	private TextField url, login;
+	
+	/**
+	 * Mot de passe à saisir pour se connecter à la base de données. 
+	 */
 	private PasswordField mdp;
 	
 	/**

@@ -17,6 +17,8 @@ import modele.Modele;
 
 /**
  * Vue du mode administrateur (Gridpane).
+ * 
+ * @author victo & rem
  */
 public class AffichageAdmin extends GridPane implements Observer{
 	/**
@@ -50,18 +52,19 @@ public class AffichageAdmin extends GridPane implements Observer{
 		lab.getStyleClass().add("Label");
 		
 		GridPane top = new GridPane();
-		top.getStyleClass().add("GridPane");
+		top.getStyleClass().add("GridPaneTop");
 		
 		ComboBox<String> nbChoix = new ComboBox<String>(tab);
-		nbChoix.getStyleClass().add("ComboBox");
 		nbChoix.getSelectionModel().selectFirst();
-		nbChoix.valueProperty().addListener(control); // Changed
-		Button bAff = new Button("Afficher") ;
-		bAff.getStyleClass().add("Button");
+		nbChoix.valueProperty().addListener(control);
+		Button bAff = new Button("Afficher");
 		bAff.setOnAction(control);
-		top.add(lab, 0, 0);
-		top.add(nbChoix, 1, 0);
-		top.add(bAff, 2, 0);
+		GridPane bBox = new GridPane();
+		bBox.getStyleClass().add("GridPaneInter");
+		bBox.add(lab, 0, 0);
+		bBox.add(nbChoix, 1, 0);
+		top.add(bBox, 0, 0);
+		top.add(bAff, 1, 0);
 		
 		Button bRetour = new Button("Retour");
 		bRetour.setOnAction(control);
@@ -69,15 +72,16 @@ public class AffichageAdmin extends GridPane implements Observer{
 		Button bAudit = new Button("Afficher la table Audit");
 		bAudit.setOnAction(control);
 		
-		FlowPane bottom = new FlowPane();
-		bottom.getChildren().add(bRetour);
-		bottom.getChildren().add(bAudit);
-		bottom.setAlignment(Pos.CENTER);
+		GridPane bottom = new GridPane();
+		bottom.getStyleClass().add("GridPaneBottom");
+		bottom.add(bRetour, 0, 0);
+		bottom.add(bAudit, 1, 0);
 		
 		m.addObserver(this);
 		
 		//bas
 		resultat = m.getResultat();
+		resultat.setFillWidth(true);
 		
 		//on ajoute tt
 		this.add(top, 0, 0);
